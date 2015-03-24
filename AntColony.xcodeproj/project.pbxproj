@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		0537FB351AC0A11F001C9AF1 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB341AC0A11F001C9AF1 /* main.cpp */; };
+		0537FB3D1AC0A90D001C9AF1 /* AntAlgorithm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB3B1AC0A90D001C9AF1 /* AntAlgorithm.cpp */; };
+		0537FB401AC0E6C8001C9AF1 /* Problem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB3E1AC0E6C8001C9AF1 /* Problem.cpp */; };
+		0537FB431AC0E6DD001C9AF1 /* PheromoneMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB411AC0E6DD001C9AF1 /* PheromoneMap.cpp */; };
+		0537FB461AC0E6E6001C9AF1 /* Ant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB441AC0E6E6001C9AF1 /* Ant.cpp */; };
+		0537FB491AC0EF45001C9AF1 /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB471AC0EF45001C9AF1 /* City.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,16 @@
 /* Begin PBXFileReference section */
 		0537FB311AC0A11F001C9AF1 /* AntColony */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = AntColony; sourceTree = BUILT_PRODUCTS_DIR; };
 		0537FB341AC0A11F001C9AF1 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		0537FB3B1AC0A90D001C9AF1 /* AntAlgorithm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AntAlgorithm.cpp; sourceTree = "<group>"; };
+		0537FB3C1AC0A90D001C9AF1 /* AntAlgorithm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AntAlgorithm.h; sourceTree = "<group>"; };
+		0537FB3E1AC0E6C8001C9AF1 /* Problem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Problem.cpp; sourceTree = "<group>"; };
+		0537FB3F1AC0E6C8001C9AF1 /* Problem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Problem.h; sourceTree = "<group>"; };
+		0537FB411AC0E6DD001C9AF1 /* PheromoneMap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PheromoneMap.cpp; sourceTree = "<group>"; };
+		0537FB421AC0E6DD001C9AF1 /* PheromoneMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PheromoneMap.h; sourceTree = "<group>"; };
+		0537FB441AC0E6E6001C9AF1 /* Ant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ant.cpp; sourceTree = "<group>"; };
+		0537FB451AC0E6E6001C9AF1 /* Ant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ant.h; sourceTree = "<group>"; };
+		0537FB471AC0EF45001C9AF1 /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = City.cpp; sourceTree = "<group>"; };
+		0537FB481AC0EF45001C9AF1 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +73,16 @@
 			isa = PBXGroup;
 			children = (
 				0537FB341AC0A11F001C9AF1 /* main.cpp */,
+				0537FB3B1AC0A90D001C9AF1 /* AntAlgorithm.cpp */,
+				0537FB3C1AC0A90D001C9AF1 /* AntAlgorithm.h */,
+				0537FB3E1AC0E6C8001C9AF1 /* Problem.cpp */,
+				0537FB3F1AC0E6C8001C9AF1 /* Problem.h */,
+				0537FB471AC0EF45001C9AF1 /* City.cpp */,
+				0537FB481AC0EF45001C9AF1 /* City.h */,
+				0537FB411AC0E6DD001C9AF1 /* PheromoneMap.cpp */,
+				0537FB421AC0E6DD001C9AF1 /* PheromoneMap.h */,
+				0537FB441AC0E6E6001C9AF1 /* Ant.cpp */,
+				0537FB451AC0E6E6001C9AF1 /* Ant.h */,
 			);
 			path = AntColony;
 			sourceTree = "<group>";
@@ -118,7 +143,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0537FB491AC0EF45001C9AF1 /* City.cpp in Sources */,
+				0537FB431AC0E6DD001C9AF1 /* PheromoneMap.cpp in Sources */,
 				0537FB351AC0A11F001C9AF1 /* main.cpp in Sources */,
+				0537FB401AC0E6C8001C9AF1 /* Problem.cpp in Sources */,
+				0537FB3D1AC0A90D001C9AF1 /* AntAlgorithm.cpp in Sources */,
+				0537FB461AC0E6E6001C9AF1 /* Ant.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
