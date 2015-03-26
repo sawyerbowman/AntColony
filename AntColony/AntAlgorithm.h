@@ -46,6 +46,9 @@ private:
     //TODO: should we use a vector or dynamic array here?
     vector<Ant*> ants;
     
+    //2D vector of distances between cities
+    vector<vector<double>> cityDistances;
+    
     //for EAS
     double eliteFactor;
     

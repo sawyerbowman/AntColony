@@ -10,11 +10,29 @@
 #define __AntColony__PheromoneMap__
 
 #include <stdio.h>
+#include <vector>
+#include "City.h"
+#include "Ant.h"
+#include "AntAlgorithm.h"
+
+using namespace std;
 
 class PheromoneMap {
 public:
     
+    //Constructor function
+    PheromoneMap(vector<City*> cities);
+    
+    //Pheromone Update function
+    void updatePheromones(vector<Ant*> ants, double evapFactor);
+    
+    
 private:
+    
+    //2D Vector of all pheromones for all edges of the graph of cities
+    vector<vector<double>> pheromoneMap;
+    
+    
     
 };
 

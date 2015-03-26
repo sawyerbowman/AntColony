@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include "City.h"
+#include "AntAlgorithm.h"
 
 class Ant {
 public:
@@ -23,8 +24,12 @@ public:
     //Getters and Setters
     vector<City*> getVisitedCities() { return visitedCities; }
     
+    int getTourLength() { return tourLength; }
+    
 private:
     vector<City*> visitedCities;
+    
+    int tourLength;
     
 };
 
