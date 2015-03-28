@@ -26,6 +26,10 @@ public:
     //Pheromone Update function
     void updatePheromones(vector<Ant*> ants, double evapFactor);
     
+    //Elitist Pheromone Update Function
+    void eliteUpdatePheromones(vector<Ant*> ants, double evapFactor, double
+                               eliteFactor);
+    
     
 private:
     
