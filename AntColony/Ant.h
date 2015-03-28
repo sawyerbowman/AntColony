@@ -11,14 +11,18 @@
 
 #include <stdio.h>
 #include "City.h"
+<<<<<<< Updated upstream
 #include "AntAlgorithm.h"
+=======
+#include "PheromoneMap.h"
+>>>>>>> Stashed changes
 
 class Ant {
 public:
     //Constructor
     Ant();
     
-    void addToVisitedCities();
+    void addToVisitedCities(PheromoneMap pMap);
     void clearVisitedCities();
     
     //Getters and Setters

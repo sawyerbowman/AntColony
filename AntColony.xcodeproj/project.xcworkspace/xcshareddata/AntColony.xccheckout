@@ -5,7 +5,11 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
+<<<<<<< Updated upstream
 	<string>CA50BAF3-50B2-49B3-8CF6-B8F8A2C44A7A</string>
+=======
+	<string>08C3DD0B-AF42-4585-B2EF-067E4245B204</string>
+>>>>>>> Stashed changes
 	<key>IDESourceControlProjectName</key>
 	<string>AntColony</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
