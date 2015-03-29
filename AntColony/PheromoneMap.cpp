@@ -34,7 +34,7 @@ PheromoneMap::PheromoneMap(vector<City*> cities){
 }
 
 /**
- *This funciton will update all pheromones (i.e. all edge probabilities)
+ *This funciton will update all pheromones (i.e. all edge probabilities) for ACS
  */
 
 void PheromoneMap::updatePheromones(vector<Ant*> ants, double evapFactor){
