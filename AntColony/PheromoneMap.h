@@ -26,6 +26,8 @@ public:
     //Pheromone Update function
     void updatePheromones(vector<Ant*> ants, double evapFactor);
     
+    vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
+    
     
 private:
     
