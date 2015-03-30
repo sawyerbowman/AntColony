@@ -14,8 +14,9 @@
 #include <fstream>
 #include <vector>
 #include "Problem.h"
-#include "City.h"
 #include "Ant.h"
+#include "City.h"
+#include "PheromoneMap.h"
 
 using namespace std;
 
@@ -42,6 +43,7 @@ private:
     double heuristicInfluence;
     double evapFactor;
     Problem* problem;
+    PheromoneMap* map;
     
     //TODO: should we use a vector or dynamic array here?
     vector<Ant*> ants;
@@ -51,6 +53,7 @@ private:
     
     //for EAS
     double eliteFactor;
+    double bsf;
     
     //For ACS
     double epsilon;
@@ -58,6 +61,7 @@ private:
     double probability;
     
     void initAnts();
+    vector<City*> findBestTour();
     
     
 };

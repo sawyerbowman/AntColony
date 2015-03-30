@@ -12,8 +12,6 @@
 #include <stdio.h>
 #include <vector>
 #include "City.h"
-#include "Ant.h"
-#include "AntAlgorithm.h"
 
 using namespace std;
 
@@ -24,11 +22,13 @@ public:
     PheromoneMap(vector<City*> cities);
     
     //Pheromone Update function
-    void updatePheromones(vector<Ant*> ants, double evapFactor);
+    void updatePheromones(vector<City*> ants, double evapFactor);
     
     //Elitist Pheromone Update Function
-    void eliteUpdatePheromones(vector<Ant*> ants, double evapFactor, double
-                               eliteFactor);
+    void eliteUpdatePheromones(vector<City*> ants, double evapFactor, double
+                               eliteFactor, double bsf);
+    
+    vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
     
     
 private:

@@ -37,7 +37,7 @@ PheromoneMap::PheromoneMap(vector<City*> cities){
  *This funciton will update all pheromones (i.e. all edge probabilities) for ACS
  */
 
-void PheromoneMap::updatePheromones(vector<Ant*> ants, double evapFactor){
+void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor){
     
     //First update all pheromones by the (1-rho)*tau additive factor.
     
@@ -52,57 +52,31 @@ void PheromoneMap::updatePheromones(vector<Ant*> ants, double evapFactor){
     }
     
     //Next update the pheromones by the delta tau summation.
-    
-    //Loop through all of the ants in our algorithm.
-    
-    for(int i = 0; i < ants.size(); i++){
         
-        //Loop through an individual ant's visited cities.
+    //Loop through an individual ant's visited cities.
         
-        for(int j = 0; j < ants.at(i)->getVisitedCities().size()-1; j++){
-            
-            //Update the appropriate edge in the Pheromone map that corresponds
-            //to the edge between the jth and jth + 1 city of that ant's tour.
-            //Sum it to the current value to get the delta tau summation.
-            
-            pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
-                ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
-                ->getCityNum()-1) += ants.at(i)->getTourLength();
-            
-        }
+    for(int j = 0; j < cities.size()-1; j++){
+        
+        //Update the appropriate edge in the Pheromone map that corresponds
+        //to the edge between the jth and jth + 1 city of that ant's tour.
+        //Sum it to the current value to get the delta tau summation.
+        
+        pheromoneMap[cities[j]->getCityNum()][cities[j+1]->getCityNum()] +=
+                    cities[j]->calcDistance(cities[j+1]);
+        
+//        pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
+//                        ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
+//                                             ->getCityNum()-1) += ants.at(i)->getTourLength();
         
     }
-    
 }
 
 /**
  *This function will update all pheromones for the elitist ant colony system
  */
 
-void PheromoneMap::eliteUpdatePheromones(vector<Ant *> ants, double evapFactor,
-                                         double eliteFactor){
-    
-    //We want to update the pheromones by the elitist delta tau.
-    
-    double bsf = numeric_limits<int>::max();
-    
-    //Keep track of which ant has the best tour.
-    
-    Ant *bestAnt = nullptr;
-    
-    //Loop through all of the ants in our algorithm to find the best tour so far
-    
-    for(int i = 0; i < ants.size(); i++){
-        
-        if(ants.at(i)->getTourLength() < bsf){
-            
-            bsf = ants.at(i)->getTourLength();
-            
-            bestAnt = ants.at(i);
-            
-        }
-        
-    }
+void PheromoneMap::eliteUpdatePheromones(vector<City*> cities, double evapFactor,
+                                         double eliteFactor, double bsf){
     
     //First update all pheromones by the (1-rho)*tau additive factor.
     
@@ -120,34 +94,32 @@ void PheromoneMap::eliteUpdatePheromones(vector<Ant *> ants, double evapFactor,
     
     //Then update the pheromones by the elitist delta tau.
     
-    for(int i = 0; i < bestAnt->getTourLength()-1; i++){
+    for(int i = 0; i < cities.size()-1; i++){
         
-        int index1 = bestAnt->getVisitedCities().at(i)->getCityNum();
-        int index2 = bestAnt->getVisitedCities().at(i+1)->getCityNum();
+        int index1 = cities[i]->getCityNum();
+        int index2 = cities[i+1]->getCityNum();
         
-        pheromoneMap.at(index1).at(index2) += 1/bsf;
+        pheromoneMap[index1][index2] += 1/bsf;
         
     }
     
     //Next update the pheromones by the delta tau summation.
     
-    //Loop through all of the ants in our algorithm.
     
-    for(int i = 0; i < ants.size(); i++){
+    //Loop through an individual ant's visited cities.
+    
+    for(int j = 0; j < cities.size()-1; j++){
         
-        //Loop through an individual ant's visited cities.
+        //Update the appropriate edge in the Pheromone map that corresponds
+        //to the edge between the jth and jth + 1 city of that ant's tour.
+        //Sum it to the current value to get the delta tau summation.
         
-        for(int j = 0; j < ants.at(i)->getVisitedCities().size()-1; j++){
-            
-            //Update the appropriate edge in the Pheromone map that corresponds
-            //to the edge between the jth and jth + 1 city of that ant's tour.
-            //Sum it to the current value to get the delta tau summation.
-            
-            pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
-                            ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
-                                                 ->getCityNum()-1) += ants.at(i)->getTourLength();
-            
-        }
+        pheromoneMap[cities[j]->getCityNum()-1][cities[j+1]->getCityNum()-1] +=
+                    cities[j]->calcDistance(cities[j+1]);
+        
+        //            pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
+        //                            ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
+        //                                                 ->getCityNum()-1) += ants.at(i)->getTourLength();
         
     }
     
@@ -156,4 +128,4 @@ void PheromoneMap::eliteUpdatePheromones(vector<Ant *> ants, double evapFactor,
 
 
 
- 
+
