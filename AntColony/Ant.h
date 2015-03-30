@@ -20,9 +20,10 @@
 class Ant {
 public:
     //Constructor
-    Ant(PheromoneMap* pMap, vector<City*> cities);
+    Ant();
     
-    void addToVisitedCities(PheromoneMap* pMap, vector<City*> cities);
+    void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+                    double beta);
     void clearVisitedCities();
     
     //Getters and Setters

@@ -22,11 +22,11 @@ public:
     PheromoneMap(vector<City*> cities);
     
     //Pheromone Update function
-    void updatePheromones(vector<City*> ants, double evapFactor);
+    void updatePheromones(vector<City*> ants, double evapFactor, double tourLength);
     
     //Elitist Pheromone Update Function
     void eliteUpdatePheromones(vector<City*> ants, double evapFactor, double
-                               eliteFactor, double bsf);
+                               eliteFactor, double bsf, double tourLength);
     
     vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
     

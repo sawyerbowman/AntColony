@@ -23,11 +23,11 @@ using namespace std;
 class AntAlgorithm {
 public:
     //Constructors for the EAS and ACS algorithms
-    AntAlgorithm(string type, string fileName, int numAnts, int iterations, double pheromoneInfluence,
-                 double heuristicInfluence, double evapFactor, double eliteFactor);
+    AntAlgorithm(string type, string fileName, int numAnts, int iterations, double alpha,
+                 double beta, double evapFactor, double eliteFactor);
     
-    AntAlgorithm(string type, string fileName, int numAnts, int iterations, double pheromoneInfluence,
-                 double heuristicInfluence, double evapFactor, double epsilon,
+    AntAlgorithm(string type, string fileName, int numAnts, int iterations, double alpha,
+                 double beta, double evapFactor, double epsilon,
                  double tao, double probability);
     
     //main function of the program
@@ -39,8 +39,8 @@ private:
     string fileName;
     int numAnts;
     int iterations;
-    double pheromoneInfluence;
-    double heuristicInfluence;
+    double alpha;
+    double beta;
     double evapFactor;
     Problem* problem;
     PheromoneMap* map;

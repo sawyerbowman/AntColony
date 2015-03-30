@@ -13,14 +13,14 @@
  */
 
 AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterations,
-                           double pheromoneInfluence, double heuristicInfluence,
+                           double alpha, double beta,
                            double evapFactor, double eliteFactor){
     this->type = type;
     this->fileName = fileName;
     this->numAnts = numAnts;
     this->iterations = iterations;
-    this->pheromoneInfluence = pheromoneInfluence;
-    this->heuristicInfluence = heuristicInfluence;
+    this->alpha = alpha;
+    this->beta = beta;
     this->evapFactor = evapFactor;
     this->eliteFactor = eliteFactor;
     
@@ -35,14 +35,14 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
  */
 
 AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterations,
-                           double pheromoneInfluence, double heuristicInfluence,
+                           double alpha, double beta,
                            double evapFactor, double epsilon, double tao, double probability){
     this->type = type;
     this->fileName = fileName;
     this->numAnts = numAnts;
     this->iterations = iterations;
-    this->pheromoneInfluence = pheromoneInfluence;
-    this->heuristicInfluence = heuristicInfluence;
+    this->alpha = alpha;
+    this->beta = beta;
     this->evapFactor = evapFactor;
     this->epsilon = epsilon;
     this->tao = tao;
@@ -60,7 +60,7 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
 
 void AntAlgorithm::initAnts(){
     for (int i = 0; i < this->numAnts; i++){
-        Ant* newAnt = new Ant(this->map, this->problem->getCities());
+        Ant* newAnt = new Ant();
         ants.push_back(newAnt);
     }
 }
@@ -71,20 +71,26 @@ void AntAlgorithm::initAnts(){
 
 void AntAlgorithm::run(){
     for (int i = 0; i < this->iterations; i++){
-        for (int a = 0; a < numAnts; a++){
-            //clear the tour and build a new one
+        //Clear the existing tour and build a new one for each ant
+        for (Ant* currentAnt : this->ants){
+            currentAnt->clearVisitedCities();
+            currentAnt->createTour(this->map, this->problem->getCities(),
+                                   this->alpha, this->beta);
         }
         //Perform ACS
         if (this->type == "ACS"){
             for (Ant* currentAnt : this->ants){
                 this->map->updatePheromones(currentAnt->getVisitedCities(),
-                                            this->evapFactor);
+                                            this->evapFactor, currentAnt->getTourLength());
             }
         }
         //Perform EAS
         else {
-            this->map->eliteUpdatePheromones(findBestTour(), this->evapFactor,
-                                             this->eliteFactor, this->bsf);
+            for (Ant* currentAnt : this->ants){
+                this->map->eliteUpdatePheromones(findBestTour(), this->evapFactor,
+                                                 this->eliteFactor, this->bsf,
+                                                 currentAnt->getTourLength());
+            }
         }
     }
 }

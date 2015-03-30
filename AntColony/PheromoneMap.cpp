@@ -37,7 +37,8 @@ PheromoneMap::PheromoneMap(vector<City*> cities){
  *This funciton will update all pheromones (i.e. all edge probabilities) for ACS
  */
 
-void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor){
+void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor,
+                                    double tourLength){
     
     //First update all pheromones by the (1-rho)*tau additive factor.
     
@@ -62,11 +63,7 @@ void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor){
         //Sum it to the current value to get the delta tau summation.
         
         pheromoneMap[cities[j]->getCityNum()][cities[j+1]->getCityNum()] +=
-                    cities[j]->calcDistance(cities[j+1]);
-        
-//        pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
-//                        ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
-//                                             ->getCityNum()-1) += ants.at(i)->getTourLength();
+                    1/tourLength;
         
     }
 }
@@ -76,7 +73,8 @@ void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor){
  */
 
 void PheromoneMap::eliteUpdatePheromones(vector<City*> cities, double evapFactor,
-                                         double eliteFactor, double bsf){
+                                         double eliteFactor, double bsf,
+                                         double tourLength){
     
     //First update all pheromones by the (1-rho)*tau additive factor.
     
@@ -115,11 +113,7 @@ void PheromoneMap::eliteUpdatePheromones(vector<City*> cities, double evapFactor
         //Sum it to the current value to get the delta tau summation.
         
         pheromoneMap[cities[j]->getCityNum()-1][cities[j+1]->getCityNum()-1] +=
-                    cities[j]->calcDistance(cities[j+1]);
-        
-        //            pheromoneMap.at(ants.at(i)->getVisitedCities().at(j)
-        //                            ->getCityNum()-1).at(ants.at(i)->getVisitedCities().at(j+1)
-        //                                                 ->getCityNum()-1) += ants.at(i)->getTourLength();
+                    1/tourLength;
         
     }
     
