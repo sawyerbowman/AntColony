@@ -20,7 +20,8 @@ City::City(string line){
     while(lineParser >> word){
         switch (count) {
             case 1:
-                this->cityNum = stoi(word);
+                //to account for 0 based vector of vectors
+                this->cityNum = stoi(word)-1;
                 break;
             case 2:
                 this->lat = stod(word);

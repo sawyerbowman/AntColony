@@ -41,12 +41,17 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
         
         for(int i = 0; i < cities.size(); i++){
             //get pheromone concentration for edge between the two cities in question
-            double tau = pheroMap[numOfStartCity-1][i];
+            double tau = pheroMap[numOfStartCity][i];
         
             double tauNum = pow((tau), alpha);
             double etaNum = 0;
-            if (startCity->calcDistance(cities[i]) == 0){
+            if (startCity->getCityNum() == cities[i]->getCityNum()){
                 etaNum = 0;
+            }
+            else if(startCity->calcDistance(cities[i]) == 0){
+                //if there are two, distinct cities that occupy the same location,
+                //we automatically want to visit that city, so we will add that city
+                //to our visited cities vector automatically and skip everything else!
             }
             else {
                 etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
@@ -80,6 +85,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             }
         }
     }
+    int x = 0;
 }
 
 /**

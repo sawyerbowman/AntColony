@@ -77,7 +77,7 @@ void AntAlgorithm::run(){
         for (Ant* currentAnt : this->ants){
             currentAnt->clearVisitedCitiesAndTour();
             
-            if (i == 20){
+            if (i == 900){
                 int x = 0;
             }
             
@@ -157,10 +157,13 @@ void AntAlgorithm::eliteUpdatePheromones(vector<City*> bestTour){
     
     for(int i = 0; i < bestTour.size()-1; i++){
         
-        int index1 = bestTour[i]->getCityNum()-1;
-        int index2 = bestTour[i+1]->getCityNum()-1;
+        int index1 = bestTour[i]->getCityNum();
+        int index2 = bestTour[i+1]->getCityNum();
         
         pMap[index1][index2] += this->eliteFactor/this->bsf;
+        pMap[index2][index1] += this->eliteFactor/this->bsf;
+
+        
         
     }
     
@@ -179,7 +182,9 @@ void AntAlgorithm::eliteUpdatePheromones(vector<City*> bestTour){
             //to the edge between the jth and jth + 1 city of that ant's tour.
             //Sum it to the current value to get the delta tau summation.
             
-            pMap[curTour[b]->getCityNum()-1][curTour[b+1]->getCityNum()-1] += 1/this->ants[a]->getTourLength();
+            pMap[curTour[b]->getCityNum()][curTour[b+1]->getCityNum()] += 1/this->ants[a]->getTourLength();
+            pMap[curTour[b+1]->getCityNum()][curTour[b]->getCityNum()] += 1/this->ants[a]->getTourLength();
+
             
         }
     }
