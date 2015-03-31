@@ -1,0 +1,12 @@
+NAME : test
+COMMENT : test problem
+TYPE : TSP
+DIMENSION: 5
+EDGE_WEIGHT_TYPE : EUC_2D
+NODE_COORD_SECTION
+  1 0 0
+  2 0 5
+  3 5 0
+  4 5 5
+  5 2 5
+EOF

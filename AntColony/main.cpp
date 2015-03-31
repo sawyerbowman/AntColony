@@ -66,6 +66,8 @@ void printACSWarnings(){
  */
 
 int main(int argc, const char * argv[]) {
+    srand( time( NULL ) );
+    
     //If wrong number of params for both algorithms, offer instructions for both
     if (argc != 9 && argc != 11){
         printEASWarnings();
@@ -106,6 +108,8 @@ int main(int argc, const char * argv[]) {
             //create EAS object and run
             AntAlgorithm eas = AntAlgorithm(type, fileName, ants, iterations, alpha, beta,
                                             rho, e);
+            
+            eas.run();
         }
         else{
             double epsilon = stod(argv[8]);
@@ -115,6 +119,7 @@ int main(int argc, const char * argv[]) {
             //create ACS object and run
             AntAlgorithm acs = AntAlgorithm(type, fileName, ants, iterations, alpha, beta,
                                             rho, epsilon, tao, q);
+            acs.run();
         }
     }
     

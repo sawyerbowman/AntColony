@@ -33,31 +33,39 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
     while (cities.size() > 0){
         vector<double> edgeProbs;
         vector<double> numerators;
-        
-        double tauDen = 0;
-        double etaDen = 0;
+
+        double den = 0;
         
         City* startCity = visitedCities[visitedCities.size()-1];
         int numOfStartCity = startCity->getCityNum();
         
         for(int i = 0; i < cities.size(); i++){
-            
             //get pheromone concentration for edge between the two cities in question
-            if (i != numOfStartCity){
-                double tau = pheroMap[numOfStartCity-1][cities[i]->getCityNum()-1];
-            
-                double tauNum = pow((tau), alpha);
-                double etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
-                numerators.push_back(tauNum*etaNum);
-                
-                tauDen += tauNum;
-                etaDen += etaNum;
+            double tau = pheroMap[numOfStartCity-1][i];
+        
+            double tauNum = pow((tau), alpha);
+            double etaNum = 0;
+            if (startCity->calcDistance(cities[i]) == 0){
+                etaNum = 0;
             }
+            else {
+                etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
+            }
+            
+            numerators.push_back(tauNum*etaNum);
+
+            den += tauNum*etaNum;
         }
         
         //calculate probabilities between cities
         for (int i = 0; i < numerators.size(); i++){
-            edgeProbs.push_back(numerators[i]/(tauDen*etaDen));
+            //in first run, everything will be 0, so divide equally between cities
+            if (den == 0){
+                edgeProbs.push_back((double)1/numerators.size());
+            }
+            else {
+                edgeProbs.push_back(numerators[i]/(den));
+            }
         }
         
         double randNextCity = (double) rand()/RAND_MAX;
@@ -78,6 +86,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
  *
  */
 
-void Ant::clearVisitedCities(){
+void Ant::clearVisitedCitiesAndTour(){
     this->visitedCities.clear();
+    this->tourLength = 0;
 }

@@ -66,7 +66,6 @@ void Problem::parseHeaderLine(string line, int count){
     line = line.substr(pos+2);
     switch (count){
         case 1:
-            cout << line << endl;
             name = line;
             break;
         case 2:

@@ -19,15 +19,11 @@ PheromoneMap::PheromoneMap(vector<City*> cities){
     
     //create a vector of all edges.
     
+    
     for(int i = 0; i < cities.size(); i++){
         
-        for(int j = 0; j < cities.size(); j++){
-            
-            //initially set all the pheromone levels to zero.
-            
-            pheromoneMap.at(i).at(j) = 0;
-            
-        }
+        vector<double> newCol(cities.size(),0);
+        pheromoneMap.push_back(newCol);
         
     }
     
@@ -67,59 +63,6 @@ void PheromoneMap::updatePheromones(vector<City*> cities, double evapFactor,
         
     }
 }
-
-/**
- *This function will update all pheromones for the elitist ant colony system
- */
-
-void PheromoneMap::eliteUpdatePheromones(vector<City*> cities, double evapFactor,
-                                         double eliteFactor, double bsf,
-                                         double tourLength){
-    
-    //First update all pheromones by the (1-rho)*tau additive factor.
-    
-    for(int i = 0; i < pheromoneMap.size(); i++){
-        
-        for(int j = 0; j < pheromoneMap.size(); j++){
-            
-            //update by the tau factor
-            
-            pheromoneMap.at(i).at(j) += (1 - evapFactor)*pheromoneMap.at(i).at(j);
-            
-        }
-        
-    }
-    
-    //Then update the pheromones by the elitist delta tau.
-    
-    for(int i = 0; i < cities.size()-1; i++){
-        
-        int index1 = cities[i]->getCityNum();
-        int index2 = cities[i+1]->getCityNum();
-        
-        pheromoneMap[index1][index2] += 1/bsf;
-        
-    }
-    
-    //Next update the pheromones by the delta tau summation.
-    
-    
-    //Loop through an individual ant's visited cities.
-    
-    for(int j = 0; j < cities.size()-1; j++){
-        
-        //Update the appropriate edge in the Pheromone map that corresponds
-        //to the edge between the jth and jth + 1 city of that ant's tour.
-        //Sum it to the current value to get the delta tau summation.
-        
-        pheromoneMap[cities[j]->getCityNum()-1][cities[j+1]->getCityNum()-1] +=
-                    1/tourLength;
-        
-    }
-    
-}
-
-
 
 
 

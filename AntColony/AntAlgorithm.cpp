@@ -73,7 +73,12 @@ void AntAlgorithm::run(){
     for (int i = 0; i < this->iterations; i++){
         //Clear the existing tour and build a new one for each ant
         for (Ant* currentAnt : this->ants){
-            currentAnt->clearVisitedCities();
+            currentAnt->clearVisitedCitiesAndTour();
+            
+            if (i == 20){
+                int x = 0;
+            }
+            
             currentAnt->createTour(this->map, this->problem->getCities(),
                                    this->alpha, this->beta);
         }
@@ -86,13 +91,21 @@ void AntAlgorithm::run(){
         }
         //Perform EAS
         else {
-            for (Ant* currentAnt : this->ants){
-                this->map->eliteUpdatePheromones(findBestTour(), this->evapFactor,
-                                                 this->eliteFactor, this->bsf,
-                                                 currentAnt->getTourLength());
-            }
+            vector<City*> bestTour = findBestTour();
+            //for (Ant* currentAnt : this->ants){
+                eliteUpdatePheromones(bestTour);
+//                this->map->eliteUpdatePheromones(bestTour, this->evapFactor,
+//                                                 this->eliteFactor, this->bsf,
+//                                                 currentAnt->getTourLength());
+            //}
+            cout << "Best so far: " << this->bsf << endl;
         }
     }
+    
+    //Find best tour and print out to user
+    findBestTour();
+    cout << "Best Tour Distance: " << this->bsf << endl;
+    exit(1);
 }
 
 /**
@@ -112,6 +125,61 @@ vector<City*> AntAlgorithm::findBestTour(){
     }
     
     return bestTour;
+}
+
+/**
+ *
+ */
+
+void AntAlgorithm::eliteUpdatePheromones(vector<City*> bestTour){
+    //First update all pheromones by the (1-rho)*tau decremental factor.
+    
+    vector<vector<double>> pMap = this->map->getPheromoneMap();
+    
+    for(int i = 0; i < pMap.size(); i++){
+        
+        for(int j = 0; j < pMap.size(); j++){
+            
+            //update by the tau factor
+            
+            pMap.at(i).at(j) = (1 - evapFactor)*pMap.at(i).at(j);
+            
+        }
+        
+    }
+    
+    //Then update the pheromones by the elitist delta tau.
+    
+    for(int i = 0; i < bestTour.size()-1; i++){
+        
+        int index1 = bestTour[i]->getCityNum()-1;
+        int index2 = bestTour[i+1]->getCityNum()-1;
+        
+        pMap[index1][index2] += this->eliteFactor/this->bsf;
+        
+    }
+    
+    //Next update the pheromones by the delta tau summation.
+    
+    
+    //Loop through an individual ant's visited cities.
+    
+    for(int a = 0; a < this->ants.size(); a++){
+        
+        vector<City*> curTour = this->ants[a]->getVisitedCities();
+        
+        for(int b = 0; b < curTour.size()-1; b++){
+            
+            //Update the appropriate edge in the Pheromone map that corresponds
+            //to the edge between the jth and jth + 1 city of that ant's tour.
+            //Sum it to the current value to get the delta tau summation.
+            
+            pMap[curTour[b]->getCityNum()-1][curTour[b+1]->getCityNum()-1] += 1/this->ants[a]->getTourLength();
+            
+        }
+    }
+    
+    this->map->setPheromoneMap(pMap);
 }
 
 

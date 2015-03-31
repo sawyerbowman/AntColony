@@ -24,7 +24,7 @@ public:
     
     void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     double beta);
-    void clearVisitedCities();
+    void clearVisitedCitiesAndTour();
     
     //Getters and Setters
     vector<City*> getVisitedCities() { return visitedCities; }

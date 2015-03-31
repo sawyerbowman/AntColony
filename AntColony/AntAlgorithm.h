@@ -63,6 +63,9 @@ private:
     void initAnts();
     vector<City*> findBestTour();
     
+    //Elitist Pheromone Update Function
+    void eliteUpdatePheromones(vector<City*> bestTour);
+    
     
 };
 

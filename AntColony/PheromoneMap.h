@@ -24,11 +24,8 @@ public:
     //Pheromone Update function
     void updatePheromones(vector<City*> ants, double evapFactor, double tourLength);
     
-    //Elitist Pheromone Update Function
-    void eliteUpdatePheromones(vector<City*> ants, double evapFactor, double
-                               eliteFactor, double bsf, double tourLength);
-    
     vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
+    void setPheromoneMap(vector<vector<double>> pMap) { this->pheromoneMap = pMap; }
     
     
 private:
