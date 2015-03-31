@@ -10,6 +10,7 @@
 #define __AntColony__Ant__
 
 #include <stdio.h>
+#include <vector>
 #include <iostream>
 #include <vector>
 #include <math.h>
@@ -25,6 +26,7 @@ public:
     void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     double beta);
     void clearVisitedCitiesAndTour();
+
     
     //Getters and Setters
     vector<City*> getVisitedCities() { return visitedCities; }
