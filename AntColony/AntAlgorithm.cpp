@@ -70,6 +70,8 @@ void AntAlgorithm::initAnts(){
  */
 
 void AntAlgorithm::run(){
+    double globalBestDist = RAND_MAX;
+    
     for (int i = 0; i < this->iterations; i++){
         //Clear the existing tour and build a new one for each ant
         for (Ant* currentAnt : this->ants){
@@ -100,11 +102,14 @@ void AntAlgorithm::run(){
             //}
             cout << "Best so far: " << this->bsf << endl;
         }
+        
+        //Check if new global best found
+        if (this->bsf < globalBestDist){
+            globalBestDist = this->bsf;
+        }
     }
     
-    //Find best tour and print out to user
-    findBestTour();
-    cout << "Best Tour Distance: " << this->bsf << endl;
+    cout << "Best Tour Distance: " << globalBestDist << endl;
     exit(1);
 }
 
