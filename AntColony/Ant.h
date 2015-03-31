@@ -11,26 +11,30 @@
 
 #include <stdio.h>
 #include <vector>
+#include <iostream>
+#include <vector>
+#include <math.h>
 #include "City.h"
-#include "AntAlgorithm.h"
 #include "PheromoneMap.h"
 
 
 class Ant {
 public:
     //Constructor
-    Ant(PheromoneMap pMap, vector<City> cities);
+    Ant();
     
-    void addToVisitedCities(PheromoneMap pMap, vector<City> cities);
+    void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+                    double beta);
+
     void clearVisitedCities();
     
     //Getters and Setters
-    vector<City> getVisitedCities() { return visitedCities; }
+    vector<City*> getVisitedCities() { return visitedCities; }
     
     double getTourLength() { return tourLength; }
     
 private:
-    vector<City> visitedCities;
+    vector<City*> visitedCities;
     
     double tourLength;
     

@@ -7,68 +7,77 @@
 //
 
 #include "Ant.h"
-#include <math.h>
 
+/**
+ *
+ */
 
-Ant::Ant(PheromoneMap pMap, vector<City> cities){
-    addToVisitedCities(pMap, cities);
+Ant::Ant(){
     tourLength = 0;
 }
 
+/**
+ *
+ */
 
-void Ant::addToVisitedCities(PheromoneMap pMap, vector<City> cities){
-    
-    const double k = 5;
-    const double alpha = 7;
-    
-    //randomly select the ant's starting city
-    int numCities = cities.size();
-    int rand = rand() % numCities;
-    visitedCities.push_back(cities.at(rand));
-    cities.erase(rand);
+void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+                     double beta){
+    //Get the starting city
+    int randCity = rand() % cities.size();
+    visitedCities.push_back(cities[randCity]);
+    cities.erase(cities.begin()+randCity);
     
     //get the perhomone map
-    vector<vector<double>> pheroMap = pMap.getPheromoneMap();
+    vector<vector<double>> pheroMap = pMap->getPheromoneMap();
     
-    
-    //build the rest of the tour
-    while(cities.size() > 0){
-        int numOfStartCity = visitedCities.at(visitedCities.size()-1).getCityNum();
-         vector<int> pheromoneProbabilities;
-        //calculate the probability of visiting each of the remaining cities
-        double totalOfNumerators = 0;
+    while (cities.size() > 0){
+        vector<double> edgeProbs;
+        vector<double> numerators;
+        
+        double tauDen = 0;
+        double etaDen = 0;
+        
+        City* startCity = visitedCities[visitedCities.size()-1];
+        int numOfStartCity = startCity->getCityNum();
         
         for(int i = 0; i < cities.size(); i++){
+            
             //get pheromone concentration for edge between the two cities in question
-            double tau = pheroMap.at(numOfStartCity).at(cities.at(i).getCityNum());
+            if (i != numOfStartCity){
+                double tau = pheroMap[numOfStartCity-1][cities[i]->getCityNum()-1];
             
-            double numeratorProb = pow((tau+k), alpha);
-            
-            totalOfNumerators += numeratorProb;
-            pheromoneProbabilities.push_back(numeratorProb);
-        }
-        
-        //choose the next city based on probabilities
-        double chooseCity = rand() % totalOfNumerators;
-        bool chosen = false;
-        double currentTotal = 0;
-        int i = 0; //loop variable
-        
-        while(chosen == false){
-            currentTotal += pheromoneProbabilities.at(i);
-            if(currentTotal >= chooseCity){
-                visitedCities.push_back(cities.at(i));
-                cities.erase(i);
-                chosen = true;
+                double tauNum = pow((tau), alpha);
+                double etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
+                numerators.push_back(tauNum*etaNum);
+                
+                tauDen += tauNum;
+                etaDen += etaNum;
             }
-            i++;
         }
-        tourLength += visitedCities.at(visitedCities.size()-1).calcDistance(visitedCities.size()-2);
         
+        //calculate probabilities between cities
+        for (int i = 0; i < numerators.size(); i++){
+            edgeProbs.push_back(numerators[i]/(tauDen*etaDen));
+        }
+        
+        double randNextCity = (double) rand()/RAND_MAX;
+        double edgeProbSum = 0;
+        for (int i = 0; i < edgeProbs.size(); i++){
+            edgeProbSum += edgeProbs[i];
+            if (edgeProbSum > randNextCity){
+                this->visitedCities.push_back(cities[i]);
+                this->tourLength += startCity->calcDistance(cities[i]);
+                cities.erase(cities.begin()+i);
+                break;
+            }
+        }
     }
 }
 
-void Ant::clearVisitedCities(){
-    
-}
+/**
+ *
+ */
 
+void Ant::clearVisitedCities(){
+    this->visitedCities.clear();
+}
