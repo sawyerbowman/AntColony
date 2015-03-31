@@ -24,7 +24,7 @@ void Ant::addToVisitedCities(PheromoneMap pMap, vector<City> cities){
     //randomly select the ant's starting city
     int numCities = cities.size();
     int rand = rand() % numCities;
-    visitedCities.push_Back(cities.at(rand));
+    visitedCities.push_back(cities.at(rand));
     cities.erase(rand);
     
     //get the perhomone map
