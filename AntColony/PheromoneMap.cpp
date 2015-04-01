@@ -16,17 +16,11 @@
  */
 
 PheromoneMap::PheromoneMap(vector<City*> cities){
-    
     //create a vector of all edges.
-    
-    
     for(int i = 0; i < cities.size(); i++){
-        
         vector<double> newCol(cities.size(),0);
         pheromoneMap.push_back(newCol);
-        
     }
-    
 }
 
 /**

@@ -20,12 +20,15 @@ using namespace std;
 
 class City {
 public:
+    //Constructor
     City(string line);
     
+    //Getters
     int getCityNum() { return cityNum; }
     double getLat() { return lat; }
     double getLon() { return lon; }
     
+    //Find distance between this city and another city
     double calcDistance(City* city2);
     
 private:

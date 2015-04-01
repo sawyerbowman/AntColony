@@ -60,6 +60,7 @@ private:
     double tao;
     double probability;
     
+    //Helper functions
     void initAnts();
     vector<City*> findBestTour();
     

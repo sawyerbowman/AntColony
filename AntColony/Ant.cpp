@@ -17,7 +17,8 @@ Ant::Ant(){
 }
 
 /**
- *
+ *Creates a tour by first selecting a random city, and then computing probabilities
+ *for each edge to an unvisited city from the last city added to the ant's tour.
  */
 
 void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
@@ -90,7 +91,8 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
 }
 
 /**
- *
+ *Clears a single ant's tour and tourlength, effectively allowing it to restart
+ *without having to generate another ant
  */
 
 void Ant::clearVisitedCitiesAndTour(){
