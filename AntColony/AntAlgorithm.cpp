@@ -77,7 +77,7 @@ void AntAlgorithm::run(){
         for (Ant* currentAnt : this->ants){
             currentAnt->clearVisitedCitiesAndTour();
             
-            if (i == 900){
+            if (i == 1){
                 int x = 0;
             }
             

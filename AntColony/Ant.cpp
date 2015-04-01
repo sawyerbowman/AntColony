@@ -41,7 +41,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
         
         for(int i = 0; i < cities.size(); i++){
             //get pheromone concentration for edge between the two cities in question
-            double tau = pheroMap[numOfStartCity][i];
+            double tau = pheroMap[numOfStartCity][cities[i]->getCityNum()];
         
             double tauNum = pow((tau), alpha);
             double etaNum = 0;
