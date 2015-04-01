@@ -82,7 +82,7 @@ void AntAlgorithm::run(){
             }
             
             currentAnt->createTour(this->map, this->problem->getCities(),
-                                   this->alpha, this->beta);
+                                   this->alpha, this->beta, this->problem->getCityDistances());
         }
         //Perform ACS
         if (this->type == "ACS"){

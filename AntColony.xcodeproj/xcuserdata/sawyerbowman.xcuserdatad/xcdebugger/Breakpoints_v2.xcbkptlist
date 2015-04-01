@@ -26,22 +26,6 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "AntColony/AntAlgorithm.cpp"
-            timestampString = "449546499.389372"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "192"
-            endingLineNumber = "192"
-            landmarkName = "AntAlgorithm::eliteUpdatePheromones(vector&lt;City*&gt; bestTour)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "AntColony/AntAlgorithm.cpp"
             timestampString = "449546496.688995"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"

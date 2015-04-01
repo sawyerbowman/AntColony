@@ -42,7 +42,7 @@ Problem::Problem(string fileName){
             //parse each line and put it into a vector of cities
             else {
                 City* newCity = new City(line);
-                cities.push_back(newCity);
+                this->cities.push_back(newCity);
             }
         }
         problemFile.close();
@@ -53,6 +53,9 @@ Problem::Problem(string fileName){
         cout << "Please enter a valid file name. This name could not open a file." << endl;
         exit(1);
     }
+    
+    //Create a vector of vector of distances between each pair of cities for later use
+    initCityDistances();
 }
 
 /**
@@ -66,18 +69,35 @@ void Problem::parseHeaderLine(string line, int count){
     line = line.substr(pos+2);
     switch (count){
         case 1:
-            name = line;
+            this->name = line;
             break;
         case 2:
-            comment = line;
+            this->comment = line;
             break;
         case 3:
-            type = line;
+            this->type = line;
             break;
         case 4:
-            dimension = stoi(line);
+            this->dimension = stoi(line);
             break;
         case 5:
-            edgeWeightType = line;
+            this->edgeWeightType = line;
     }
 }
+
+/**
+ *Initialize a vector of vectors that holds every distance between any pair
+ *of cities from the problem
+ */
+
+void Problem::initCityDistances(){
+    for (int i = 0; i < this->cities.size(); i++){
+        vector<double> col;
+        this->cityDistances.push_back(col);
+        for (int j = 0; j < this->cities.size(); j++){
+            this->cityDistances[i].push_back(cities[i]->calcDistance(cities[j]));
+        }
+    }
+}
+
+

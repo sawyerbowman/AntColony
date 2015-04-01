@@ -24,7 +24,9 @@ public:
     Problem(string fileName);
     
     //Getters and Setters
-    vector<City*> getCities() { return cities; }
+    vector<City*> getCities() { return this->cities; }
+    
+    vector<vector<double>> getCityDistances() { return this->cityDistances; }
     
 private:
     //Information variables
@@ -37,8 +39,14 @@ private:
     //Vector of cities from the problem file
     vector<City*> cities;
     
+    //Vector of Vectors to hold city distances
+    vector<vector<double>> cityDistances;
+    
     //Helper method to parse the file
     void parseHeaderLine(string line, int count);
+    
+    //Helper method to init distances (dynamic programming)
+    void initCityDistances();
     
     
 };
