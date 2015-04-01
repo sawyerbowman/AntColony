@@ -20,9 +20,6 @@ public:
     //Constructor function
     PheromoneMap(vector<City*> cities);
     
-    //Pheromone Update function
-    void updatePheromones(vector<City*> ants, double evapFactor, double tourLength);
-    
     //Getters and Setters
     vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
     void setPheromoneMap(vector<vector<double>> pMap) { this->pheromoneMap = pMap; }

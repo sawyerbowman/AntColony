@@ -22,7 +22,8 @@ Ant::Ant(){
  */
 
 void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
-                     double beta, vector<vector<double>> distances){
+                     double beta, vector<vector<double>> distances, string
+                     type, double epsilon, double tauNaught){
     //Get the starting city
     int randCity = rand() % cities.size();
     visitedCities.push_back(cities[randCity]);
@@ -82,6 +83,12 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                 this->visitedCities.push_back(cities[i]);
                 //this->tourLength += startCity->calcDistance(cities[i]);
                 this->tourLength += distances[startCity->getCityNum()][cities[i]->getCityNum()];
+                if(type == "ACS"){
+                    pheroMap[startCity->getCityNum()][cities[i]->getCityNum()] =
+                    (1-epsilon)*pheroMap[startCity->getCityNum()][cities[i]->getCityNum()] +
+                    epsilon*tauNaught;
+                    pMap->setPheromoneMap(pheroMap);
+                }
                 cities.erase(cities.begin()+i);
                 break;
             }

@@ -78,8 +78,7 @@ private:
     vector<City*> findBestTour();
     
     //Elitist Pheromone Update Function
-    void eliteUpdatePheromones(vector<City*> bestTour);
-    
+    void updatePheromones(vector<City*> bestTour, string type);
     
 };
 
