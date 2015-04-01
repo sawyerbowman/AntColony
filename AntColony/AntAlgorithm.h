@@ -13,10 +13,15 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <pthread.h>
+#include <thread>
+
 #include "Problem.h"
 #include "Ant.h"
 #include "City.h"
 #include "PheromoneMap.h"
+
+#define NUM_THREADS 20
 
 using namespace std;
 
@@ -29,6 +34,17 @@ public:
     AntAlgorithm(string type, string fileName, int numAnts, int iterations, double alpha,
                  double beta, double evapFactor, double epsilon,
                  double tao, double probability);
+    
+    string getType() { return this->type; }
+    string getFileName() { return this->fileName; }
+    int getNumAnts() { return this->numAnts; }
+    int getIterations() { return this->iterations; }
+    double getAlpha() { return this->alpha; }
+    double getBeta() { return this->beta; }
+    Problem* getProblem() { return this->problem; }
+    PheromoneMap* getMap() { return this->map; }
+    double getEliteFactor() { return this->eliteFactor; }
+    double getBSF() { return this->bsf; }
     
     //main function of the program
     void run();
@@ -47,9 +63,6 @@ private:
     
     //TODO: should we use a vector or dynamic array here?
     vector<Ant*> ants;
-    
-    //2D vector of distances between cities
-    vector<vector<double>> cityDistances;
     
     //for EAS
     double eliteFactor;
