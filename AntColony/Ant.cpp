@@ -35,6 +35,8 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
     while (cities.size() > 0){
         vector<double> edgeProbs;
         vector<double> numerators;
+        
+        bool sameLocation = false;
 
         double den = 0;
         
@@ -57,6 +59,10 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                 //if there are two, distinct cities that occupy the same location,
                 //we automatically want to visit that city, so we will add that city
                 //to our visited cities vector automatically and skip everything else!
+                
+                this->visitedCities.push_back(cities[i]);
+                sameLocation = true;
+                break;
             }
             else {
                 //etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
@@ -71,30 +77,32 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
         double randNextCity = (double) rand()/RAND_MAX;
         double edgeProbSum = 0;
         
-        //calculate probabilities between cities and determine which edge to take
-        for (int i = 0; i < numerators.size(); i++){
-            //in first run, everything will be 0, so divide equally between cities
-            if (den == 0){
-                edgeProbs.push_back((double)1/numerators.size());
-            }
-            else {
-                edgeProbs.push_back(numerators[i]/(den));
-            }
-            edgeProbSum += edgeProbs[i];
-            if (edgeProbSum > randNextCity){
-                int addCityNum = cities[i]->getCityNum();
-                
-                this->visitedCities.push_back(cities[i]);
-                //this->tourLength += startCity->calcDistance(cities[i]);
-                this->tourLength += distances[numOfStartCity][addCityNum];
-                if(type == "ACS"){
-                    pheroMap[numOfStartCity][addCityNum] =
-                    (1-epsilon)*pheroMap[numOfStartCity][addCityNum] +
-                    epsilon*tauNaught;
-                    pMap->setPheromoneMap(pheroMap);
+        if(!sameLocation){
+            //calculate probabilities between cities and determine which edge to take
+            for (int i = 0; i < numerators.size(); i++){
+                //in first run, everything will be 0, so divide equally between cities
+                if (den == 0){
+                    edgeProbs.push_back((double)1/numerators.size());
                 }
-                cities.erase(cities.begin()+i);
-                break;
+                else {
+                    edgeProbs.push_back(numerators[i]/(den));
+                }
+                edgeProbSum += edgeProbs[i];
+                if (edgeProbSum > randNextCity){
+                    int addCityNum = cities[i]->getCityNum();
+                    
+                    this->visitedCities.push_back(cities[i]);
+                    //this->tourLength += startCity->calcDistance(cities[i]);
+                    this->tourLength += distances[numOfStartCity][addCityNum];
+                    if(type == "ACS"){
+                        pheroMap[numOfStartCity][addCityNum] =
+                        (1-epsilon)*pheroMap[numOfStartCity][addCityNum] +
+                        epsilon*tauNaught;
+                        pMap->setPheromoneMap(pheroMap);
+                    }
+                    cities.erase(cities.begin()+i);
+                    break;
+                }
             }
         }
     }

@@ -33,8 +33,7 @@ public:
                  double beta, double evapFactor, double eliteFactor);
     
     AntAlgorithm(string type, string fileName, int numAnts, int iterations, double alpha,
-                 double beta, double evapFactor, double epsilon,
-                 double tao, double probability);
+                 double beta, double evapFactor, double epsilon, double probability);
     
     string getType() { return this->type; }
     string getFileName() { return this->fileName; }
@@ -47,7 +46,6 @@ public:
     double getEliteFactor() { return this->eliteFactor; }
     double getBSF() { return this->bsf; }
     double getEpsilon() { return this->epsilon; }
-    double getTaoNaught() { return this->tao; }
     
     //main function of the program
     void run();
@@ -73,13 +71,13 @@ private:
     
     //For ACS
     double epsilon;
-    double tao;
     double probability;
     
     //Helper functions
     void initAnts();
     vector<City*> findBestTour();
-    void runThreads();
+    void runThreads(double tauNaught);
+    vector<City*> getGreedyTour();
     
     //Elitist Pheromone Update Function
     void updatePheromones(vector<City*> bestTour, string type);
