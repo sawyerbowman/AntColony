@@ -17,6 +17,9 @@ City::City(string line){
     string word;
     stringstream lineParser (line);
     int count = 1;
+    
+    cout << line << endl;
+    
     while(lineParser >> word){
         switch (count) {
             case 1:

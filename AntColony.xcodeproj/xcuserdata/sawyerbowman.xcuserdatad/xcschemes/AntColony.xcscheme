@@ -70,11 +70,19 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "../assign-3-aco-for-tsp/ALL_tsp/att48.tsp"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "../assign-3-aco-for-tsp/ALL_tsp/test.tsp"
+            argument = "../assign-3-aco-for-tsp/ALL_tsp/burma14.tsp"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "../assign-3-aco-for-tsp/ALL_tsp/eil51.tsp"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "../assign-3-aco-for-tsp/ALL_tsp/eil101.tsp"
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "20"

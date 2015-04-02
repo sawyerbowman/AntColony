@@ -24,20 +24,21 @@ Problem::Problem(string fileName){
     //If file is valid, continue parsing
     if (problemFile.is_open()){
         int count = 1;
+        bool inHeader = true;
         while (getline(problemFile, line)){
             //parse first five lines
-            if (count < 7){
-                //skip the header line for the main data
-                if (count == 6){
-                    count++;
-                    continue;
+            if (inHeader){
+                if (line.substr(0,4) == "NODE"){
+                    inHeader = false;
                 }
-                parseHeaderLine(line, count);
-                count++;
+                else {
+                    parseHeaderLine(line, count);
+                    count++;
+                }
             }
             //check if end of file
             else if (line == "EOF"){
-                continue;
+                break;
             }
             //parse each line and put it into a vector of cities
             else {
@@ -82,6 +83,8 @@ void Problem::parseHeaderLine(string line, int count){
             break;
         case 5:
             this->edgeWeightType = line;
+        default:
+            break;
     }
 }
 

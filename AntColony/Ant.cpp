@@ -42,23 +42,25 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
         int numOfStartCity = startCity->getCityNum();
         
         for(int i = 0; i < cities.size(); i++){
+            int addCityNum = cities[i]->getCityNum();
+            
             //get pheromone concentration for edge between the two cities in question
-            double tau = pheroMap[numOfStartCity][cities[i]->getCityNum()];
+            double tau = pheroMap[numOfStartCity][addCityNum];
         
             double tauNum = pow((tau), alpha);
             double etaNum = 0;
-            if (startCity->getCityNum() == cities[i]->getCityNum()){
+            if (numOfStartCity == addCityNum){
                 etaNum = 0;
             }
             //else if(startCity->calcDistance(cities[i]) == 0){
-            else if (distances[startCity->getCityNum()][cities[i]->getCityNum()] == 0){
+            else if (distances[numOfStartCity][addCityNum] == 0){
                 //if there are two, distinct cities that occupy the same location,
                 //we automatically want to visit that city, so we will add that city
                 //to our visited cities vector automatically and skip everything else!
             }
             else {
                 //etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
-                etaNum = pow(distances[startCity->getCityNum()][cities[i]->getCityNum()], -1*beta);
+                etaNum = pow(distances[numOfStartCity][addCityNum], -1*beta);
             }
             
             numerators.push_back(tauNum*etaNum);
@@ -80,12 +82,14 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             }
             edgeProbSum += edgeProbs[i];
             if (edgeProbSum > randNextCity){
+                int addCityNum = cities[i]->getCityNum();
+                
                 this->visitedCities.push_back(cities[i]);
                 //this->tourLength += startCity->calcDistance(cities[i]);
-                this->tourLength += distances[startCity->getCityNum()][cities[i]->getCityNum()];
+                this->tourLength += distances[numOfStartCity][addCityNum];
                 if(type == "ACS"){
-                    pheroMap[startCity->getCityNum()][cities[i]->getCityNum()] =
-                    (1-epsilon)*pheroMap[startCity->getCityNum()][cities[i]->getCityNum()] +
+                    pheroMap[numOfStartCity][addCityNum] =
+                    (1-epsilon)*pheroMap[numOfStartCity][addCityNum] +
                     epsilon*tauNaught;
                     pMap->setPheromoneMap(pheroMap);
                 }
@@ -94,7 +98,6 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             }
         }
     }
-    int x = 0;
 }
 
 /**
