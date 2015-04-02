@@ -13,7 +13,6 @@
 		0537FB431AC0E6DD001C9AF1 /* PheromoneMap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB411AC0E6DD001C9AF1 /* PheromoneMap.cpp */; };
 		0537FB461AC0E6E6001C9AF1 /* Ant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB441AC0E6E6001C9AF1 /* Ant.cpp */; };
 		0537FB491AC0EF45001C9AF1 /* City.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0537FB471AC0EF45001C9AF1 /* City.cpp */; };
-		054991051ACDC44B008B7EA7 /* EdgeUpdate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 054991031ACDC44B008B7EA7 /* EdgeUpdate.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -41,8 +40,6 @@
 		0537FB451AC0E6E6001C9AF1 /* Ant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ant.h; sourceTree = "<group>"; };
 		0537FB471AC0EF45001C9AF1 /* City.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = City.cpp; sourceTree = "<group>"; };
 		0537FB481AC0EF45001C9AF1 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
-		054991031ACDC44B008B7EA7 /* EdgeUpdate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EdgeUpdate.cpp; sourceTree = "<group>"; };
-		054991041ACDC44B008B7EA7 /* EdgeUpdate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EdgeUpdate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +83,6 @@
 				0537FB421AC0E6DD001C9AF1 /* PheromoneMap.h */,
 				0537FB441AC0E6E6001C9AF1 /* Ant.cpp */,
 				0537FB451AC0E6E6001C9AF1 /* Ant.h */,
-				054991031ACDC44B008B7EA7 /* EdgeUpdate.cpp */,
-				054991041ACDC44B008B7EA7 /* EdgeUpdate.h */,
 			);
 			path = AntColony;
 			sourceTree = "<group>";
@@ -151,7 +146,6 @@
 				0537FB491AC0EF45001C9AF1 /* City.cpp in Sources */,
 				0537FB431AC0E6DD001C9AF1 /* PheromoneMap.cpp in Sources */,
 				0537FB351AC0A11F001C9AF1 /* main.cpp in Sources */,
-				054991051ACDC44B008B7EA7 /* EdgeUpdate.cpp in Sources */,
 				0537FB401AC0E6C8001C9AF1 /* Problem.cpp in Sources */,
 				0537FB3D1AC0A90D001C9AF1 /* AntAlgorithm.cpp in Sources */,
 				0537FB461AC0E6E6001C9AF1 /* Ant.cpp in Sources */,

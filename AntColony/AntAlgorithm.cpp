@@ -68,14 +68,12 @@ void AntAlgorithm::initAnts(){
 /**
  *A function to build a tour through threads (each ant gets its own thread
  */
-vector<EdgeUpdate*> buildTour(AntAlgorithm* data, Ant* currentAnt){
+void buildTour(AntAlgorithm* data, Ant* currentAnt){
     //Clear the existing tour and build a new one for each ant
     currentAnt->clearVisitedCitiesAndTour();
     currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(),
                            data->getBeta(), data->getProblem()->getCityDistances(),
                            data->getType(), data->getEpsilon(), data->getTaoNaught());
-    vector<EdgeUpdate*> test;
-    return test;
 }
 
 /**
@@ -89,7 +87,7 @@ void AntAlgorithm::run(){
     
     for (int i = 0; i < this->iterations; i++){
         
-        vector<vector<EdgeUpdate*>> edgeUpdates = runFutures();
+        runThreads();
         
 //        //Clear the existing tour and build a new one for each ant
 //        for (Ant* currentAnt : this->ants){
@@ -120,45 +118,26 @@ void AntAlgorithm::run(){
  *pheromone map.
  */
 
-vector<vector<EdgeUpdate*>> AntAlgorithm::runFutures(){
+void AntAlgorithm::runThreads(){
     //Use threads to build a tour for each ant
-    //std::thread threads[NUM_THREADS];
+    thread threads[NUM_THREADS];
     
     /*
-     *Futures to hold a vector of EdgeUpdate to be used in delta tau
-     *summation for each ant's tour later
-     */
-    vector<future<vector<EdgeUpdate*>>> futures;
-    vector<vector<EdgeUpdate*>> edgeUpdates;
-    
-    /*
-     *Initialize and run the futures in the background. NOTE: the number
-     *of futures needs to be the same as the number of ants
+     *Initialize and run the threads in the background. NOTE: the number
+     *of threads needs to be the same as the number of ants
      */
     for (int t = 0; t < NUM_THREADS; t++) {
         Ant* currentAnt = this->ants[t];
-        //threads[t] = std::thread(buildTour, this, currentAnt);
-        future<vector<EdgeUpdate*>> future = async(buildTour, this, currentAnt);
-        futures.push_back(future);
+        threads[t] = std::thread(buildTour, this, currentAnt);
     }
     
     /*
-     *Retrieve each future's result, and if not done computing, halt execution
-     *of main thread until done.
+     *make the main thread wait for each of these threads to complete before
+     *moving on
      */
-    for (int t = 0; t < NUM_THREADS; t++){
-        edgeUpdates.push_back(futures[t].get());
+    for (int t=0; t < NUM_THREADS; t++){
+        threads[t].join();
     }
-    
-//    /*
-//     *make the main thread wait for each of these threads to complete before
-//     *moving on
-//     */
-//    for (int t=0; t < NUM_THREADS; t++){
-//        //threads[t].join();
-//    }
-    
-    return edgeUpdates;
 }
 
 /**

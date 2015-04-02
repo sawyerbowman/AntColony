@@ -15,7 +15,6 @@
 #include <math.h>
 #include "City.h"
 #include "PheromoneMap.h"
-#include "EdgeUpdate.h"
 
 
 class Ant {
@@ -23,7 +22,7 @@ public:
     //Constructor
     Ant();
     
-    vector<EdgeUpdate*> createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+    void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     double beta, vector<vector<double>> distances, string type,
                     double epsilon, double tauNaught);
     void clearVisitedCitiesAndTour();

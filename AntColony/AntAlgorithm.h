@@ -21,7 +21,6 @@
 #include "Ant.h"
 #include "City.h"
 #include "PheromoneMap.h"
-#include "EdgeUpdate.h"
 
 #define NUM_THREADS 20
 
@@ -80,7 +79,7 @@ private:
     //Helper functions
     void initAnts();
     vector<City*> findBestTour();
-    vector<vector<EdgeUpdate*>> runFutures();
+    void runThreads();
     
     //Elitist Pheromone Update Function
     void updatePheromones(vector<City*> bestTour, string type);
