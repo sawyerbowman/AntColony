@@ -158,7 +158,7 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
     
     for(int i = 0; i < pMap.size(); i++){
         for(int j = 0; j < pMap.size(); j++){
-            //update by the tau factor
+            //update by the evaporation factor
             pMap[i][j] = (1 - evapFactor)*pMap[i][j];
         }
     }
