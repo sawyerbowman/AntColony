@@ -71,7 +71,9 @@ void AntAlgorithm::initAnts(){
 void buildTour(AntAlgorithm* data, Ant* currentAnt){
     //Clear the existing tour and build a new one for each ant
     currentAnt->clearVisitedCitiesAndTour();
-    currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(), data->getBeta(), data->getProblem()->getCityDistances());
+    currentAnt->createTour(data->getMap(), data->getProblem()->getCities(),
+                           data->getAlpha(), data->getBeta(),
+                           data->getProblem()->getCityDistances());
 }
 
 /**
@@ -83,28 +85,31 @@ void AntAlgorithm::run(){
     
     for (int i = 0; i < this->iterations; i++){
         
-        //Use threads to build a tour for each ant
-        std::thread threads[NUM_THREADS];
-        
-        //initialize and run the thread passing in appropriate data
-        for (int t = 0; t < NUM_THREADS; t++) {
-            Ant* currentAnt = this->ants[t];
-            threads[t] = std::thread(buildTour, this, currentAnt);
-        }
-        
-        /*
-         *make the main thread wait for each of these threads to complete before
-         *moving on
-         */
-        for (int t=0; t < NUM_THREADS; t++){
-            threads[t].join();
-        }
-        
-//        //Clear the existing tour and build a new one for each ant
-//        for (Ant* currentAnt : this->ants){
-//            currentAnt->clearVisitedCitiesAndTour();
-//            currentAnt->createTour(this->map, this->problem->getCities(), this->alpha, this->beta, this->problem->getCityDistances());
+//        //Use threads to build a tour for each ant
+//        std::thread threads[NUM_THREADS];
+//        
+//        /*
+//         *initialize and run the thread passing in appropriate data
+//         *NOTE: #ants must equal #threads!!!
+//         */
+//        for (int t = 0; t < NUM_THREADS; t++) {
+//            Ant* currentAnt = this->ants[t];
+//            threads[t] = std::thread(buildTour, this, currentAnt);
 //        }
+//        
+//        /*
+//         *make the main thread wait for each of these threads to complete before
+//         *moving on
+//         */
+//        for (int t=0; t < NUM_THREADS; t++){
+//            threads[t].join();
+//        }
+        
+        //Clear the existing tour and build a new one for each ant
+        for (Ant* currentAnt : this->ants){
+            currentAnt->clearVisitedCitiesAndTour();
+            currentAnt->createTour(this->map, this->problem->getCities(), this->alpha, this->beta, this->problem->getCityDistances());
+        }
 
         //Perform ACS
         if (this->type == "ACS"){
