@@ -25,17 +25,16 @@ public:
     void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     double beta, vector<vector<double>> distances, string type,
                     double epsilon, double tauNaught, double q);
+    void createGreedyTour();
     void clearVisitedCitiesAndTour();
 
     
     //Getters and Setters
     vector<City*> getVisitedCities() { return visitedCities; }
-    
     double getTourLength() { return tourLength; }
     
 private:
     vector<City*> visitedCities;
-    
     double tourLength;
     
     City* addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<double>> distances,

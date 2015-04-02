@@ -56,7 +56,6 @@ void printACSWarnings(){
     cout << "Rho:           the pheromone evaporation factor (double)"
     << endl;
     cout << "Epsilon:       wearing away of pheromone in ACS (double)" << endl;
-    cout << "Tao:           wearing away of pheromone in ACS (double)" << endl;
     cout << "q:             probability in ACS ant will choose best leg "
     " for next leg of tour it is constructing (double)" << endl;
 }
@@ -69,7 +68,7 @@ int main(int argc, const char * argv[]) {
     srand( time( NULL ) );
     
     //If wrong number of params for both algorithms, offer instructions for both
-    if (argc != 9 && argc != 11){
+    if (argc != 9 && argc != 10){
         printEASWarnings();
         
         cout << "" << endl;
@@ -87,7 +86,7 @@ int main(int argc, const char * argv[]) {
     }
     
     //Print warnings for wrong number of parameters for ACS
-    else if (argc != 11 && type == ACS){
+    else if (argc != 10 && type == ACS){
         printACSWarnings();
     }
     else {
@@ -113,12 +112,11 @@ int main(int argc, const char * argv[]) {
         }
         else{
             double epsilon = stod(argv[8]);
-            double tao = stod(argv[9]);
-            double q = stod(argv[10]);
+            double q = stod(argv[9]);
             
             //create ACS object and run
             AntAlgorithm acs = AntAlgorithm(type, fileName, ants, iterations, alpha, beta,
-                                            rho, epsilon, tao, q);
+                                            rho, epsilon, q);
             acs.run();
         }
     }

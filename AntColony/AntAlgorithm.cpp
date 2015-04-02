@@ -36,7 +36,7 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
 
 AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterations,
                            double alpha, double beta,
-                           double evapFactor, double epsilon, double tao, double probability){
+                           double evapFactor, double epsilon, double q){
     this->type = type;
     this->fileName = fileName;
     this->numAnts = numAnts;
@@ -45,8 +45,7 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
     this->beta = beta;
     this->evapFactor = evapFactor;
     this->epsilon = epsilon;
-    this->tao = tao;
-    this->probability = probability;
+    this->q = q;
     
     this->problem = new Problem(this->fileName);
     this->map = new PheromoneMap(this->problem->getCities());
@@ -68,12 +67,12 @@ void AntAlgorithm::initAnts(){
 /**
  *A function to build a tour through threads (each ant gets its own thread
  */
-void buildTour(AntAlgorithm* data, Ant* currentAnt){
+void buildTour(AntAlgorithm* data, Ant* currentAnt, double tauNaught){
     //Clear the existing tour and build a new one for each ant
     currentAnt->clearVisitedCitiesAndTour();
     currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(),
                            data->getBeta(), data->getProblem()->getCityDistances(),
-                           data->getType(), data->getEpsilon(), data->getTaoNaught());
+                           data->getType(), data->getEpsilon(), tauNaught, data->getQ());
 }
 
 /**
@@ -85,9 +84,18 @@ void AntAlgorithm::run(){
     
     double globalBestDist = RAND_MAX;
     
+    vector<City*> greedyTour = getGreedyTour();
+    //calculate length of greedyTour
+    double greedyLength = 0;
+    for(int i = 0; i < greedyTour.size()-1; i++){
+        greedyLength += greedyTour[i]->calcDistance(greedyTour[i+1]);
+    }
+    
+    double tauNaught = 1/(greedyLength*this->numAnts);
+    
     for (int i = 0; i < this->iterations; i++){
         
-        runThreads();
+        runThreads(tauNaught);
         
 //        //Clear the existing tour and build a new one for each ant
 //        for (Ant* currentAnt : this->ants){
@@ -118,7 +126,7 @@ void AntAlgorithm::run(){
  *pheromone map.
  */
 
-void AntAlgorithm::runThreads(){
+void AntAlgorithm::runThreads(double tauNaught){
     //Use threads to build a tour for each ant
     thread threads[NUM_THREADS];
     
@@ -128,7 +136,7 @@ void AntAlgorithm::runThreads(){
      */
     for (int t = 0; t < NUM_THREADS; t++) {
         Ant* currentAnt = this->ants[t];
-        threads[t] = std::thread(buildTour, this, currentAnt);
+        threads[t] = std::thread(buildTour, this, currentAnt, tauNaught);
     }
     
     /*
@@ -210,5 +218,52 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
     }
     
     this->map->setPheromoneMap(pMap);
+}
+
+/**
+ *
+ */
+
+vector<City*> AntAlgorithm::getGreedyTour(){
+    
+    vector<City*> problemCities = this->problem->getCities();
+    vector<City*> visitedCities;
+    int randCity = rand() % problemCities.size();
+    
+    //Add the first random city to our visitedCities vector.
+    visitedCities.push_back(problemCities[randCity]);
+    //Delete the city from our problemCities vector.
+    problemCities.erase(problemCities.begin() + randCity);
+    
+    //Next we want to greedily add cities.
+    
+    while(problemCities.size() > 0){
+        
+        City* startCity = visitedCities[visitedCities.size()-1];
+        
+        City* bestCity = nullptr;
+        double bestCityDist = RAND_MAX/1.0;
+        
+        //Find the closest city from startCity
+        for(int i = 0; i < problemCities.size(); i++){
+            
+            double newDistance = startCity->calcDistance(problemCities[i]);
+            
+            if(newDistance < bestCityDist){
+                
+                bestCityDist = newDistance;
+                bestCity = problemCities[i];
+                
+            }
+            
+        }
+        
+        visitedCities.push_back(bestCity);
+        problemCities.erase(problemCities.begin() + bestCity->getCityNum());
+        
+    }
+    
+    return visitedCities;
+    
 }
 
