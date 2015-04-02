@@ -71,7 +71,7 @@ void AntAlgorithm::initAnts(){
 void buildTour(AntAlgorithm* data, Ant* currentAnt){
     //Clear the existing tour and build a new one for each ant
     currentAnt->clearVisitedCitiesAndTour();
-    currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(), data->getBeta(), data->getProblem()->getCityDistances());
+    currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(), data->getBeta(), data->getProblem()->getCityDistances(), data->getType(), data->getEpsilon(), data->getTaoNaught());
 }
 
 /**
