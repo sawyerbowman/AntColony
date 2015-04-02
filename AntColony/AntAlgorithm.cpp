@@ -83,6 +83,8 @@ vector<EdgeUpdate*> buildTour(AntAlgorithm* data, Ant* currentAnt){
  */
 
 void AntAlgorithm::run(){
+    //this is a test
+    
     double globalBestDist = RAND_MAX;
     
     for (int i = 0; i < this->iterations; i++){
