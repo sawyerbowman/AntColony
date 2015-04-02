@@ -65,31 +65,19 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "../assign-3-aco-for-tsp/ALL_tsp/a280.tsp"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "../assign-3-aco-for-tsp/ALL_tsp/att48.tsp"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "../assign-3-aco-for-tsp/ALL_tsp/burma14.tsp"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "../assign-3-aco-for-tsp/ALL_tsp/eil51.tsp"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "../assign-3-aco-for-tsp/ALL_tsp/eil101.tsp"
-            isEnabled = "YES">
+            argument = "../assign-3-aco-for-tsp/ALL_tsp/fl3795.tsp"
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "20"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "500"
+            argument = "100"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

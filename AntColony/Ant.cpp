@@ -21,7 +21,7 @@ Ant::Ant(){
  *for each edge to an unvisited city from the last city added to the ant's tour.
  */
 
-void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+vector<EdgeUpdate*> Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                      double beta, vector<vector<double>> distances, string
                      type, double epsilon, double tauNaught){
     //Get the starting city

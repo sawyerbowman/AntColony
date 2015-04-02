@@ -10,12 +10,12 @@
 #define __AntColony__Ant__
 
 #include <stdio.h>
-#include <vector>
 #include <iostream>
 #include <vector>
 #include <math.h>
 #include "City.h"
 #include "PheromoneMap.h"
+#include "EdgeUpdate.h"
 
 
 class Ant {
@@ -23,7 +23,7 @@ public:
     //Constructor
     Ant();
     
-    void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
+    vector<EdgeUpdate*> createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     double beta, vector<vector<double>> distances, string type,
                     double epsilon, double tauNaught);
     void clearVisitedCitiesAndTour();
