@@ -23,7 +23,7 @@ Ant::Ant(){
 
 void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                      double beta, vector<vector<double>> distances, string
-                     type, double epsilon, double tauNaught){
+                     type, double epsilon, double tauNaught, double q){
     //Get the starting city
     int randCity = rand() % cities.size();
     visitedCities.push_back(cities[randCity]);
@@ -35,11 +35,21 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
     while (cities.size() > 0){
         vector<double> edgeProbs;
         vector<double> numerators;
-
+        
         double den = 0;
         
         City* startCity = visitedCities[visitedCities.size()-1];
         int numOfStartCity = startCity->getCityNum();
+        
+        if (type == "ACS"){
+            double randProb = (double) rand()/RAND_MAX;
+            if (q > randProb){
+                //add city that will maximize pheromone * 1/distance to beta
+                this->visitedCities.push_back(addCityOnMaxEdge(pheroMap, distances,
+                                                               beta, cities, numOfStartCity));
+                continue;
+            }
+        }
         
         for(int i = 0; i < cities.size(); i++){
             int addCityNum = cities[i]->getCityNum();
@@ -98,6 +108,30 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             }
         }
     }
+}
+
+/**
+ *If using the Ant Colony System, this will choose a city to add to the ant's
+ *tour with a probability of q that represents the maximal edge of pheromone
+ *times 1/edgedistance ^ Beta
+ */
+
+City* Ant::addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<double>> distances,
+                           double beta, vector<City*> remainCities, int startCityNum){
+    double bestEdge = RAND_MAX;
+    City* bestCity = remainCities[0];
+    for (City* city : remainCities){
+        int cityNum = city->getCityNum();
+        //TODO: could use some form of dynamic programming here so as not to recalc edges
+        double newEdge = pheroMap[startCityNum][cityNum] *
+                        pow((1/distances[startCityNum][cityNum]), beta);
+        
+        if (newEdge < bestEdge){
+            bestEdge = newEdge;
+            bestCity = city;
+        }
+    }
+    return bestCity;
 }
 
 /**
