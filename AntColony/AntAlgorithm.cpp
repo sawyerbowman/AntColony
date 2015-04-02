@@ -243,6 +243,7 @@ vector<City*> AntAlgorithm::getGreedyTour(){
         
         City* bestCity = nullptr;
         double bestCityDist = RAND_MAX/1.0;
+        int bestIndex = 0;
         
         //Find the closest city from startCity
         for(int i = 0; i < problemCities.size(); i++){
@@ -253,13 +254,14 @@ vector<City*> AntAlgorithm::getGreedyTour(){
                 
                 bestCityDist = newDistance;
                 bestCity = problemCities[i];
+                bestIndex = i;
                 
             }
             
         }
         
         visitedCities.push_back(bestCity);
-        problemCities.erase(problemCities.begin() + bestCity->getCityNum());
+        problemCities.erase(problemCities.begin() + bestIndex);
         
     }
     

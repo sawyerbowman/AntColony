@@ -62,6 +62,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "EAS"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "ACS"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -94,15 +98,15 @@
          </CommandLineArgument>
          <CommandLineArgument
             argument = "20"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = ".1"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = ".9"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
