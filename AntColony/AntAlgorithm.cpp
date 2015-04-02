@@ -110,19 +110,11 @@ void AntAlgorithm::run(){
                                    this->beta, this->problem->getCityDistances(),
                                    this->type, this->epsilon, this->tao);
         }
-
-        //Perform ACS
-        if (this->type == "ACS"){
-            vector<City*> bestTour = findBestTour();
-            updatePheromones(bestTour, this->type);
-            cout << "Best so far: " << this->bsf << endl;
-        }
-        //Perform EAS
-        else {
-            vector<City*> bestTour = findBestTour();
-            updatePheromones(bestTour, this->type);
-            cout << "Best so far: " << this->bsf << endl;
-        }
+        
+        //Update the pheromone map based on tours constructed by ants
+        vector<City*> bestTour = findBestTour();
+        updatePheromones(bestTour, this->type);
+        cout << "Best so far: " << this->bsf << endl;
         
         //Check if new global best found
         if (this->bsf < globalBestDist){
