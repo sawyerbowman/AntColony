@@ -45,6 +45,8 @@ public:
     PheromoneMap* getMap() { return this->map; }
     double getEliteFactor() { return this->eliteFactor; }
     double getBSF() { return this->bsf; }
+    double getEpsilon() { return this->epsilon; }
+    double getTaoNaught() { return this->tao; }
     
     //main function of the program
     void run();
@@ -78,8 +80,7 @@ private:
     vector<City*> findBestTour();
     
     //Elitist Pheromone Update Function
-    void eliteUpdatePheromones(vector<City*> bestTour);
-    
+    void updatePheromones(vector<City*> bestTour, string type);
     
 };
 

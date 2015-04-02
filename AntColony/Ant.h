@@ -24,7 +24,8 @@ public:
     Ant();
     
     void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
-                    double beta, vector<vector<double>> distances);
+                    double beta, vector<vector<double>> distances, string type,
+                    double epsilon, double tauNaught);
     void clearVisitedCitiesAndTour();
 
     
