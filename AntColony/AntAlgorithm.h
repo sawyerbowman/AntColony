@@ -16,6 +16,10 @@
 #include <pthread.h>
 #include <thread>
 #include <future>
+#include <chrono>
+#include <ctime>
+#include <time.h>
+#include <sys/time.h>
 
 #include "Problem.h"
 #include "Ant.h"
@@ -24,6 +28,9 @@
 
 #define NUM_THREADS 10
 #define PHER_INIT   .002
+
+const int optimals[] {259045, 80450, 137694, 182566, 565530};
+const int maxTime = 120;
 
 using namespace std;
 
@@ -51,7 +58,7 @@ public:
     double getTauNaught() { return this->tauNaught; }
     
     //main function of the program
-    void run();
+    void run(int problemNum);
     
 private:
     //Shared Variables

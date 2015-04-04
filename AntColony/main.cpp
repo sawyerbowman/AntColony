@@ -16,6 +16,15 @@ using namespace std;
 const string EAS = "EAS";
 const string ACS = "ACS";
 
+const int reps = 5;
+const int iterations = 100;
+const int numAnts[] = {10, 30};
+const double elitestFactor[] = {10, 30};
+const double alpha[] = {1, 2};
+const double beta[] = {3, 5};
+const double rho[] = {.1, .3};
+const double qNaught[] = {.7, .9};
+
 /**
  *Prints out the instructions for parameter entry on the command line for EAS
  */
@@ -58,6 +67,63 @@ void printACSWarnings(){
     cout << "Epsilon:       wearing away of pheromone in ACS (double)" << endl;
     cout << "q:             probability in ACS ant will choose best leg "
     " for next leg of tour it is constructing (double)" << endl;
+}
+
+/**
+ *Saves output into csv file
+ */
+
+void saveResultsACS(string problemName, int numAnts, double alpha, double beta, double rho){
+    ofstream csvFile;
+    csvFile.open("/Users/sawyerbowman/Desktop/acs_results", std::ios_base::app);
+    
+    csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
+    rho << endl;
+    
+    csvFile.close();
+}
+
+/**
+ *Saves output into csv file
+ */
+
+void saveResultsEAS(string problemName, int numAnts, double alpha, double beta, double rho){
+    ofstream csvFile;
+    csvFile.open("/Users/sawyerbowman/Desktop/eas_results", std::ios_base::app);
+    
+    csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
+    rho << endl;
+    
+    csvFile.close();
+}
+
+/**
+ *Testing loop
+ */
+
+void testing(){
+    for (int alph = 0; alph < 2; alph++){
+        for (int bet = 0; bet < 2; bet++){
+            for (int rh = 0; rh < 2; rh++){
+                for (int r = 0; r < reps; r++){
+                    //run ACS
+                    AntAlgorithm* alg = new AntAlgorithm("ACS", "filename", numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], .1, .9);
+                    alg->run(0);
+                    
+                    //write ACS results
+                    saveResultsACS("fileName", numAnts[0], alpha[alph], beta[bet], rho[rh]);
+                    
+                    
+                    //run EAS
+                    alg = new AntAlgorithm("EAS", "filename", numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], elitestFactor[0]);
+                    alg->run(0);
+                    
+                    //write EAS results
+                    saveResultsEAS("fileName", numAnts[0], alpha[alph], beta[bet], rho[rh]);
+                }
+            }
+        }
+    }
 }
 
 /**
@@ -108,7 +174,7 @@ int main(int argc, const char * argv[]) {
             AntAlgorithm eas = AntAlgorithm(type, fileName, ants, iterations, alpha, beta,
                                             rho, e);
             
-            eas.run();
+            eas.run(0);
         }
         else{
             double epsilon = stod(argv[8]);
@@ -117,7 +183,7 @@ int main(int argc, const char * argv[]) {
             //create ACS object and run
             AntAlgorithm acs = AntAlgorithm(type, fileName, ants, iterations, alpha, beta,
                                             rho, epsilon, q);
-            acs.run();
+            acs.run(0);
         }
     }
     

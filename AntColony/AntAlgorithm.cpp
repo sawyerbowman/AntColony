@@ -97,8 +97,12 @@ void AntAlgorithm::calcTauNaught(){
  *The main function of the program
  */
 
-void AntAlgorithm::run(){
+void AntAlgorithm::run(int problemNum){
     double globalBestDist = RAND_MAX;
+    struct timeval start, end;
+    gettimeofday(&start, NULL);
+    
+    //clock_t start = clock();
     
     for (int i = 0; i < this->iterations; i++){
         
@@ -120,6 +124,15 @@ void AntAlgorithm::run(){
         //Check if new global best found
         if (this->bsf < globalBestDist){
             globalBestDist = this->bsf;
+        }
+        
+        //Break out if it's time or the algorithm found a near optimal tour length
+        gettimeofday(&end, NULL);
+        double time = ((end.tv_sec  - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
+        //double time = (double)(clock() - start)/CLOCKS_PER_SEC;
+        cout << time << endl;
+        if (time > maxTime || this->bsf <= 1.05*optimals[problemNum]){
+            break;
         }
     }
     
