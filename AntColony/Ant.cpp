@@ -29,9 +29,10 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
     visitedCities.push_back(cities[randCity]);
     cities.erase(cities.begin()+randCity);
     
-    //get the perhomone map
+    //get the pheromone map
     vector<vector<double>> pheroMap = pMap->getPheromoneMap();
     
+    //loop through until all cities have been visited
     while (cities.size() > 0){
         vector<double> edgeProbs;
         vector<double> numerators;
@@ -47,8 +48,19 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             double randProb = (double) rand()/RAND_MAX;
             if (q > randProb){
                 //add city that will maximize pheromone * 1/distance to beta
-                this->visitedCities.push_back(addCityOnMaxEdge(pheroMap, distances,
-                                                               beta, cities, numOfStartCity));
+                City* newCity = addCityOnMaxEdge(pheroMap, distances, beta, cities,
+                                                 numOfStartCity);
+                
+                this->visitedCities.push_back(newCity);
+                this->tourLength += distances[numOfStartCity][newCity->getCityNum()];
+                
+                //remove city that was just added
+                cities.erase(remove(cities.begin(), cities.end(), newCity), cities.end());
+                
+                //wear out the pheromones on the edge traversed
+                erasePheromones(numOfStartCity, newCity->getCityNum(), epsilon, pheroMap,
+                                tauNaught, pMap);
+
                 continue;
             }
         }
@@ -62,6 +74,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             double tauNum = pow((tau), alpha);
             double etaNum = 0;
             if (numOfStartCity == addCityNum){
+                cout << "This is bad" << endl;
                 etaNum = 0;
             }
             //else if(startCity->calcDistance(cities[i]) == 0){
@@ -69,14 +82,14 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                 //if there are two, distinct cities that occupy the same location,
                 //we automatically want to visit that city, so we will add that city
                 //to our visited cities vector automatically and skip everything else!
-                
+                cout << "This is bad" << endl;
                 this->visitedCities.push_back(cities[i]);
                 sameLocation = true;
                 break;
             }
             else {
                 //etaNum = pow(startCity->calcDistance(cities[i]), -1*beta);
-                etaNum = pow(distances[numOfStartCity][addCityNum], -1*beta);
+                etaNum = pow(1/distances[numOfStartCity][addCityNum], beta);
             }
             
             numerators.push_back(tauNum*etaNum);
@@ -84,11 +97,11 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             den += tauNum*etaNum;
         }
         
-        double randNextCity = (double) rand()/RAND_MAX;
-        double edgeProbSum = 0;
-        
         if(!sameLocation){
-            //calculate probabilities between cities and determine which edge to take
+            //Calculate probabilities between cities and determine which edge to take
+            double randNextCity = (double) rand()/RAND_MAX;
+            double edgeProbSum = 0;
+            
             for (int i = 0; i < numerators.size(); i++){
                 //in first run, everything will be 0, so divide equally between cities
                 if (den == 0){
@@ -105,10 +118,8 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                     //this->tourLength += startCity->calcDistance(cities[i]);
                     this->tourLength += distances[numOfStartCity][addCityNum];
                     if(type == "ACS"){
-                        pheroMap[numOfStartCity][addCityNum] =
-                        (1-epsilon)*pheroMap[numOfStartCity][addCityNum] +
-                        epsilon*tauNaught;
-                        pMap->setPheromoneMap(pheroMap);
+                        erasePheromones(numOfStartCity, addCityNum, epsilon, pheroMap,
+                                        tauNaught, pMap);
                     }
                     cities.erase(cities.begin()+i);
                     break;
@@ -119,6 +130,18 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
 }
 
 /**
+ *Erase pheromones on given edge
+ */
+
+void Ant::erasePheromones(int startCityNum, int addCityNum, double epsilon,
+                          vector<vector<double>> pheroMap, double tauNaught,
+                          PheromoneMap* pMap ){
+    pheroMap[startCityNum][addCityNum] = (1-epsilon)*pheroMap[startCityNum][addCityNum]
+                                        + epsilon*tauNaught;
+    pMap->setPheromoneMap(pheroMap);
+}
+
+/**
  *If using the Ant Colony System, this will choose a city to add to the ant's
  *tour with a probability of q that represents the maximal edge of pheromone
  *times 1/edgedistance ^ Beta
@@ -126,8 +149,8 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
 
 City* Ant::addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<double>> distances,
                            double beta, vector<City*> remainCities, int startCityNum){
-    double bestEdge = RAND_MAX;
-    City* bestCity = remainCities[0];
+    double bestEdge = 0;
+    City* bestCity = nullptr;
     
     //Loop through remaining cities to determine next best city to add
     for (City* city : remainCities){
@@ -143,7 +166,7 @@ City* Ant::addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<doubl
                         pow((1/distances[startCityNum][cityNum]), beta);
         
         //Update best city if necessary
-        if (newEdge < bestEdge){
+        if (newEdge > bestEdge){
             bestEdge = newEdge;
             bestCity = city;
         }

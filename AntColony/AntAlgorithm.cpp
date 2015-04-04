@@ -23,9 +23,11 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
     this->beta = beta;
     this->evapFactor = evapFactor;
     this->eliteFactor = eliteFactor;
+    this->tauNaught = 0;
+    this->q = 0;
     
     this->problem = new Problem(this->fileName);
-    this->map = new PheromoneMap(this->problem->getCities());
+    this->map = new PheromoneMap(this->problem->getCities(), PHER_INIT);
     
     initAnts();
 }
@@ -48,7 +50,8 @@ AntAlgorithm::AntAlgorithm(string type, string fileName, int numAnts, int iterat
     this->q = q;
     
     this->problem = new Problem(this->fileName);
-    this->map = new PheromoneMap(this->problem->getCities());
+    calcTauNaught();
+    this->map = new PheromoneMap(this->problem->getCities(), this->tauNaught);
     
     initAnts();
 }
@@ -67,23 +70,19 @@ void AntAlgorithm::initAnts(){
 /**
  *A function to build a tour through threads (each ant gets its own thread
  */
-void buildTour(AntAlgorithm* data, Ant* currentAnt, double tauNaught){
+void buildTour(AntAlgorithm* data, Ant* currentAnt){
     //Clear the existing tour and build a new one for each ant
     currentAnt->clearVisitedCitiesAndTour();
     currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(),
                            data->getBeta(), data->getProblem()->getCityDistances(),
-                           data->getType(), data->getEpsilon(), tauNaught, data->getQ());
+                           data->getType(), data->getEpsilon(), data->getTauNaught(), data->getQ());
 }
 
 /**
- *The main function of the program
+ *
  */
 
-void AntAlgorithm::run(){
-    //this is a test
-    
-    double globalBestDist = RAND_MAX;
-    
+void AntAlgorithm::calcTauNaught(){
     vector<City*> greedyTour = getGreedyTour();
     //calculate length of greedyTour
     double greedyLength = 0;
@@ -91,18 +90,26 @@ void AntAlgorithm::run(){
         greedyLength += greedyTour[i]->calcDistance(greedyTour[i+1]);
     }
     
-    double tauNaught = 1/(greedyLength*this->numAnts);
+    this->tauNaught = 1/(greedyLength*this->numAnts);
+}
+
+/**
+ *The main function of the program
+ */
+
+void AntAlgorithm::run(){
+    double globalBestDist = RAND_MAX;
     
     for (int i = 0; i < this->iterations; i++){
         
-        runThreads(tauNaught);
+        runThreads();
         
 //        //Clear the existing tour and build a new one for each ant
 //        for (Ant* currentAnt : this->ants){
 //            currentAnt->clearVisitedCitiesAndTour();
-//            currentAnt->createTour(this->map, this->problem->getCities(), this->alpha,
-//                                   this->beta, this->problem->getCityDistances(),
-//                                   this->type, this->epsilon, this->tao);
+//            currentAnt->createTour(this->getMap(), this->getProblem()->getCities(), this->getAlpha(),
+//                                   this->getBeta(), this->getProblem()->getCityDistances(),
+//                                   this->getType(), this->getEpsilon(), this->getTauNaught(), this->getQ());
 //        }
         
         //Update the pheromone map based on tours constructed by ants
@@ -121,12 +128,12 @@ void AntAlgorithm::run(){
 }
 
 /**
- *Responsible for initializing futures. For each ant, a future builds a tour and computes
+ *Responsible for initializing threads. For each ant, a thread builds a tour and computes
  *a vector of edge updates for that tour that will be used in the update of the
  *pheromone map.
  */
 
-void AntAlgorithm::runThreads(double tauNaught){
+void AntAlgorithm::runThreads(){
     //Use threads to build a tour for each ant
     thread threads[NUM_THREADS];
     
@@ -136,7 +143,7 @@ void AntAlgorithm::runThreads(double tauNaught){
      */
     for (int t = 0; t < NUM_THREADS; t++) {
         Ant* currentAnt = this->ants[t];
-        threads[t] = std::thread(buildTour, this, currentAnt, tauNaught);
+        threads[t] = std::thread(buildTour, this, currentAnt);
     }
     
     /*
@@ -191,14 +198,14 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
         int index2 = bestTour[i+1]->getCityNum();
         
         if(type == "EAS"){
-            pMap[index1][index2] += this->eliteFactor/this->bsf;
-            pMap[index2][index1] += this->eliteFactor/this->bsf;
-            
+            double pherUpdate = this->eliteFactor/this->bsf;
+            pMap[index1][index2] += pherUpdate;
+            pMap[index2][index1] += pherUpdate;
         }
         else{
-            pMap[index1][index2] += this->evapFactor/this->bsf;
-            pMap[index2][index1] += this->evapFactor/this->bsf;
-            
+            double pherUpdate = this->evapFactor/this->bsf;
+            pMap[index1][index2] += pherUpdate;
+            pMap[index2][index1] += pherUpdate;
         }
     }
     
@@ -211,8 +218,9 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
                 //Update the appropriate edges in the Pheromone map that corresponds
                 //to the edge between the jth and jth + 1 (and vice versa) city of
                 //that ant's tour. Sum it to the current value to get the delta tau summation.
-                pMap[curTour[b]->getCityNum()][curTour[b+1]->getCityNum()] += 1/this->ants[a]->getTourLength();
-                pMap[curTour[b+1]->getCityNum()][curTour[b]->getCityNum()] += 1/this->ants[a]->getTourLength();
+                double pherUpdate = 1/this->ants[a]->getTourLength();
+                pMap[curTour[b]->getCityNum()][curTour[b+1]->getCityNum()] += pherUpdate;
+                pMap[curTour[b+1]->getCityNum()][curTour[b]->getCityNum()] += pherUpdate;
             }
         }
     }
@@ -225,7 +233,6 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
  */
 
 vector<City*> AntAlgorithm::getGreedyTour(){
-    
     vector<City*> problemCities = this->problem->getCities();
     vector<City*> visitedCities;
     int randCity = rand() % problemCities.size();
@@ -236,9 +243,7 @@ vector<City*> AntAlgorithm::getGreedyTour(){
     problemCities.erase(problemCities.begin() + randCity);
     
     //Next we want to greedily add cities.
-    
     while(problemCities.size() > 0){
-        
         City* startCity = visitedCities[visitedCities.size()-1];
         
         City* bestCity = nullptr;
@@ -247,25 +252,16 @@ vector<City*> AntAlgorithm::getGreedyTour(){
         
         //Find the closest city from startCity
         for(int i = 0; i < problemCities.size(); i++){
-            
             double newDistance = startCity->calcDistance(problemCities[i]);
-            
             if(newDistance < bestCityDist){
-                
                 bestCityDist = newDistance;
                 bestCity = problemCities[i];
                 bestIndex = i;
-                
             }
-            
         }
-        
         visitedCities.push_back(bestCity);
         problemCities.erase(problemCities.begin() + bestIndex);
-        
     }
-    
     return visitedCities;
-    
 }
 

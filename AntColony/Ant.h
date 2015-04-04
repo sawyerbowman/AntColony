@@ -39,6 +39,9 @@ private:
     
     City* addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<double>> distances,
                           double beta, vector<City*> remainCities, int startCityNum);
+    void erasePheromones(int startCityNum, int addCityNum, double epsilon,
+                         vector<vector<double>> pheroMap, double tauNaught,
+                         PheromoneMap* pMap);
     
 };
 

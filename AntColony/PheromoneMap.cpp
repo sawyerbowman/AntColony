@@ -15,10 +15,10 @@
  *initial pheromone level is set to zero.
  */
 
-PheromoneMap::PheromoneMap(vector<City*> cities){
+PheromoneMap::PheromoneMap(vector<City*> cities, double initalPher){
     //create a vector of all edges.
     for(int i = 0; i < cities.size(); i++){
-        vector<double> newCol(cities.size(),0);
+        vector<double> newCol(cities.size(), initalPher);
         pheromoneMap.push_back(newCol);
     }
 }

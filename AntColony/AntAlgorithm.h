@@ -22,7 +22,8 @@
 #include "City.h"
 #include "PheromoneMap.h"
 
-#define NUM_THREADS 20
+#define NUM_THREADS 10
+#define PHER_INIT   .002
 
 using namespace std;
 
@@ -47,6 +48,7 @@ public:
     double getBSF() { return this->bsf; }
     double getEpsilon() { return this->epsilon; }
     double getQ() { return this->q; }
+    double getTauNaught() { return this->tauNaught; }
     
     //main function of the program
     void run();
@@ -71,14 +73,17 @@ private:
     double bsf;
     
     //For ACS
+    double tauNaught;
     double epsilon;
     double q;
     
     //Helper functions
     void initAnts();
     vector<City*> findBestTour();
-    void runThreads(double tauNaught);
+    void runThreads();
     vector<City*> getGreedyTour();
+    void calcTauNaught();
+    
     
     //Elitist Pheromone Update Function
     void updatePheromones(vector<City*> bestTour, string type);

@@ -18,8 +18,6 @@ City::City(string line){
     stringstream lineParser (line);
     int count = 1;
     
-    cout << line << endl;
-    
     while(lineParser >> word){
         switch (count) {
             case 1:

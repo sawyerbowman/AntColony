@@ -18,7 +18,7 @@ using namespace std;
 class PheromoneMap {
 public:
     //Constructor function
-    PheromoneMap(vector<City*> cities);
+    PheromoneMap(vector<City*> cities, double initialPher);
     
     //Getters and Setters
     vector<vector<double>> getPheromoneMap(){return pheromoneMap;}

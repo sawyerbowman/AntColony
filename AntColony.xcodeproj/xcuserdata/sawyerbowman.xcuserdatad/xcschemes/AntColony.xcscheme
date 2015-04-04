@@ -62,11 +62,11 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "EAS"
-            isEnabled = "NO">
+            isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "ACS"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
             argument = "../assign-3-aco-for-tsp/ALL_tsp/eil51.tsp"
@@ -77,11 +77,11 @@
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "20"
+            argument = "10"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "100"
+            argument = "30"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -89,7 +89,7 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "3"
+            argument = "3.5"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
@@ -97,16 +97,16 @@
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "20"
+            argument = "10"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = ".1"
             isEnabled = "NO">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = ".1"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = ".9"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
