@@ -156,7 +156,7 @@ void AntAlgorithm::runThreads(){
      */
     for (int t = 0; t < NUM_THREADS; t++) {
         Ant* currentAnt = this->ants[t];
-        threads[t] = std::thread(buildTour, this, currentAnt);
+        threads[t] = thread(buildTour, this, currentAnt);
     }
     
     /*
@@ -196,7 +196,7 @@ vector<City*> AntAlgorithm::findBestTour(){
 
 void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
     //First update all pheromones by the (1-rho)*tau decremental factor.
-    vector<vector<double>> pMap = this->map->getPheromoneMap();
+    vector<vector<double> > pMap = this->map->getPheromoneMap();
     
     for(int i = 0; i < pMap.size(); i++){
         for(int j = 0; j < pMap.size(); j++){

@@ -21,12 +21,12 @@ public:
     PheromoneMap(vector<City*> cities, double initialPher);
     
     //Getters and Setters
-    vector<vector<double>> getPheromoneMap(){return pheromoneMap;}
-    void setPheromoneMap(vector<vector<double>> pMap) { this->pheromoneMap = pMap; }
+    vector<vector<double> > getPheromoneMap(){return pheromoneMap;}
+    void setPheromoneMap(vector<vector<double> > pMap) { this->pheromoneMap = pMap; }
     
 private:
     //2D Vector of all pheromones for all edges of the graph of cities
-    vector<vector<double>> pheromoneMap;
+    vector<vector<double> > pheromoneMap;
 
 };
 

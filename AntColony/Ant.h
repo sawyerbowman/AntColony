@@ -23,7 +23,7 @@ public:
     Ant();
     
     void createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
-                    double beta, vector<vector<double>> distances, string type,
+                    double beta, vector<vector<double> > distances, string type,
                     double epsilon, double tauNaught, double q);
     void createGreedyTour();
     void clearVisitedCitiesAndTour();
@@ -37,10 +37,10 @@ private:
     vector<City*> visitedCities;
     double tourLength;
     
-    City* addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<double>> distances,
+    City* addCityOnMaxEdge(vector<vector<double> > pheroMap, vector<vector<double> > distances,
                           double beta, vector<City*> remainCities, int startCityNum);
     void erasePheromones(int startCityNum, int addCityNum, double epsilon,
-                         vector<vector<double>> pheroMap, double tauNaught,
+                         vector<vector<double> > pheroMap, double tauNaught,
                          PheromoneMap* pMap);
     
 };

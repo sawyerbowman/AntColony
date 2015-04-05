@@ -26,7 +26,7 @@ public:
     //Getters and Setters
     vector<City*> getCities() { return this->cities; }
     
-    vector<vector<double>> getCityDistances() { return this->cityDistances; }
+    vector<vector<double> > getCityDistances() { return this->cityDistances; }
     
 private:
     //Information variables
@@ -40,7 +40,7 @@ private:
     vector<City*> cities;
     
     //Vector of Vectors to hold city distances
-    vector<vector<double>> cityDistances;
+    vector<vector<double> > cityDistances;
     
     //Helper method to parse the file
     void parseHeaderLine(string line, int count);

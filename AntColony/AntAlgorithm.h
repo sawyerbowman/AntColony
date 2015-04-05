@@ -29,7 +29,7 @@
 #define NUM_THREADS 10
 #define PHER_INIT   .002
 
-const int optimals[] {259045, 80450, 137694, 182566, 565530};
+const int optimals[5] = {259045, 80450, 137694, 182566, 565530};
 const int maxTime = 120;
 
 using namespace std;
