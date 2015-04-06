@@ -23,10 +23,12 @@ public:
     //Constructor
     City(string line);
     
-    //Getters
+    //Getters and setters
     int getCityNum() { return cityNum; }
     double getLat() { return lat; }
     double getLon() { return lon; }
+    //int getNearestCity() { return this->nearestCity; }
+    //void setNearestCity(int cityNum) { this->nearestCity = cityNum; }
     
     //Find distance between this city and another city
     double calcDistance(City* city2);
@@ -35,6 +37,7 @@ private:
     int cityNum;
     double lat;
     double lon;
+    //int nearestCity;
 };
 
 #endif /* defined(__AntColony__City__) */

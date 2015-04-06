@@ -70,12 +70,14 @@ void AntAlgorithm::initAnts(){
 /**
  *A function to build a tour through threads (each ant gets its own thread
  */
-void buildTour(AntAlgorithm* data, Ant* currentAnt){
+void buildTour(AntAlgorithm* data, vector<Ant*> threadAnts){
     //Clear the existing tour and build a new one for each ant
-    currentAnt->clearVisitedCitiesAndTour();
-    currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(),
-                           data->getBeta(), data->getProblem()->getCityDistances(),
-                           data->getType(), data->getEpsilon(), data->getTauNaught(), data->getQ());
+    for (Ant* currentAnt : threadAnts){
+        currentAnt->clearVisitedCitiesAndTour();
+        currentAnt->createTour(data->getMap(), data->getProblem()->getCities(), data->getAlpha(),
+                               data->getBeta(), data->getProblem()->getCityDistances(),
+                               data->getType(), data->getEpsilon(), data->getTauNaught(), data->getQ());
+    }
 }
 
 /**
@@ -97,7 +99,7 @@ void AntAlgorithm::calcTauNaught(){
  *The main function of the program
  */
 
-void AntAlgorithm::run(int problemNum){
+double AntAlgorithm::run(int problemNum){
     double globalBestDist = RAND_MAX;
     struct timeval start, end;
     gettimeofday(&start, NULL);
@@ -119,7 +121,7 @@ void AntAlgorithm::run(int problemNum){
         //Update the pheromone map based on tours constructed by ants
         vector<City*> bestTour = findBestTour();
         updatePheromones(bestTour, this->type);
-        cout << "Best so far: " << this->bsf << endl;
+        //cout << "Best so far: " << this->bsf << endl;
         
         //Check if new global best found
         if (this->bsf < globalBestDist){
@@ -130,14 +132,16 @@ void AntAlgorithm::run(int problemNum){
         gettimeofday(&end, NULL);
         double time = ((end.tv_sec  - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
         //double time = (double)(clock() - start)/CLOCKS_PER_SEC;
-        cout << time << endl;
-        if (time > maxTime || this->bsf <= 1.05*optimals[problemNum]){
+        //cout << time << endl;
+        if (time > maxTime){ // || this->bsf <= 1.05*optimals[problemNum]){
+            cout << "Iterations taken: " << i << "." << endl;
             break;
         }
     }
     
     cout << "Best Tour Distance: " << globalBestDist << endl;
-    exit(1);
+    //exit(1);
+    return globalBestDist;
 }
 
 /**
@@ -150,13 +154,37 @@ void AntAlgorithm::runThreads(){
     //Use threads to build a tour for each ant
     thread threads[NUM_THREADS];
     
+    //divide into four vectors of approximately equal length
+    vector<vector<Ant*> > allAnts;
+    
+    if (this->numAnts == 10){
+        vector<Ant*> threadOneAnts(this->ants.begin(), this->ants.begin()+3);
+        allAnts.push_back(threadOneAnts);
+        vector<Ant*> threadTwoAnts(this->ants.begin()+3, this->ants.begin()+6);
+        allAnts.push_back(threadTwoAnts);
+        vector<Ant*> threadThreeAnts(this->ants.begin()+6, this->ants.begin()+8);
+        allAnts.push_back(threadThreeAnts);
+        vector<Ant*> threadFourAnts(this->ants.begin()+8, this->ants.begin()+10);
+        allAnts.push_back(threadFourAnts);
+    }
+    else if (this->numAnts == 30) {
+        vector<Ant*> threadOneAnts(this->ants.begin(), this->ants.begin()+8);
+        allAnts.push_back(threadOneAnts);
+        vector<Ant*> threadTwoAnts(this->ants.begin()+8, this->ants.begin()+16);
+        allAnts.push_back(threadTwoAnts);
+        vector<Ant*> threadThreeAnts(this->ants.begin()+16, this->ants.begin()+23);
+        allAnts.push_back(threadThreeAnts);
+        vector<Ant*> threadFourAnts(this->ants.begin()+23, this->ants.begin()+30);
+        allAnts.push_back(threadFourAnts);
+    }
+    
     /*
      *Initialize and run the threads in the background. NOTE: the number
      *of threads needs to be the same as the number of ants
      */
     for (int t = 0; t < NUM_THREADS; t++) {
-        Ant* currentAnt = this->ants[t];
-        threads[t] = thread(buildTour, this, currentAnt);
+        //Ant* currentAnt = this->ants[t];
+        threads[t] = thread(buildTour, this, allAnts[t]);
     }
     
     /*

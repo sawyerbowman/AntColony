@@ -26,7 +26,7 @@
 #include "City.h"
 #include "PheromoneMap.h"
 
-#define NUM_THREADS 10
+#define NUM_THREADS 4
 #define PHER_INIT   .002
 
 const int optimals[5] = {259045, 80450, 137694, 182566, 565530};
@@ -58,7 +58,7 @@ public:
     double getTauNaught() { return this->tauNaught; }
     
     //main function of the program
-    void run(int problemNum);
+    double run(int problemNum);
     
 private:
     //Shared Variables

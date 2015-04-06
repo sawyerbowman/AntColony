@@ -24,6 +24,12 @@ Ant::Ant(){
 void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                      double beta, vector<vector<double>> distances, string
                      type, double epsilon, double tauNaught, double q){
+    /*
+     *Don't delete from this vector, must keep all elements. The other vector
+     *of cities (passed in) represents the vector we delete from.
+     */
+    vector<City*> allCities = cities;
+    
     //Get the starting city
     int randCity = rand() % cities.size();
     visitedCities.push_back(cities[randCity]);
@@ -34,6 +40,8 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
     
     //loop through until all cities have been visited
     while (cities.size() > 0){
+        //cout << cities.size() << endl;
+        
         vector<double> edgeProbs;
         vector<double> numerators;
         
@@ -50,12 +58,21 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                 //add city that will maximize pheromone * 1/distance to beta
                 City* newCity = addCityOnMaxEdge(pheroMap, distances, beta, cities,
                                                  numOfStartCity);
+                int newCityNum = newCity->getCityNum();
+                //int newCityNum = startCity->getNearestCity();
+                //City* newCity = allCities[newCityNum];
                 
                 this->visitedCities.push_back(newCity);
-                this->tourLength += distances[numOfStartCity][newCity->getCityNum()];
+                this->tourLength += distances[numOfStartCity][newCityNum];
+                
+                //cout << newCityNum << endl;
                 
                 //remove city that was just added
                 cities.erase(remove(cities.begin(), cities.end(), newCity), cities.end());
+                
+//                for (int i = 0; i < cities.size(); i++){
+//                    cout << cities[i]->getCityNum() << endl;
+//                }
                 
                 //wear out the pheromones on the edge traversed
                 erasePheromones(numOfStartCity, newCity->getCityNum(), epsilon, pheroMap,
@@ -160,8 +177,7 @@ City* Ant::addCityOnMaxEdge(vector<vector<double>> pheroMap, vector<vector<doubl
         if (distances[startCityNum][cityNum] == 0){
             return city;
         }
-        
-        //TODO: could use some form of dynamic programming here so as not to recalc edges
+
         double newEdge = pheroMap[startCityNum][cityNum] *
                         pow((1/distances[startCityNum][cityNum]), beta);
         

@@ -18,6 +18,8 @@ Problem::Problem(string fileName){
     //Try to read in the file
     ifstream problemFile(fileName);
     
+    //cout << fileName << endl;
+    
     //String to hold each line
     string line;
     
@@ -90,16 +92,24 @@ void Problem::parseHeaderLine(string line, int count){
 
 /**
  *Initialize a vector of vectors that holds every distance between any pair
- *of cities from the problem
+ *of cities from the problem. While looping through, find the nearest city and
+ *set that property.
  */
 
 void Problem::initCityDistances(){
     for (int i = 0; i < this->cities.size(); i++){
         vector<double> col;
         this->cityDistances.push_back(col);
+        //int bestCityForCity = 0;
+        //double bestDistance = RAND_MAX/1.0;
         for (int j = 0; j < this->cities.size(); j++){
             this->cityDistances[i].push_back(cities[i]->calcDistance(cities[j]));
+//            if (this->cityDistances[i][j] < bestDistance && i != j){
+//                bestCityForCity = j;
+//                bestDistance = this->cityDistances[i][j];
+//            }
         }
+        //this->cities[i]->setNearestCity(bestCityForCity);
     }
 }
 

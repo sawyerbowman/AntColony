@@ -23,7 +23,11 @@ const double elitestFactor[] = {10, 30};
 const double alpha[] = {1, 2};
 const double beta[] = {3, 5};
 const double rho[] = {.1, .3};
-const double qNaught[] = {.7, .9};
+const string fileNames[] = {"../test_files/pr1002.tsp",
+    "../test_files/2/2",
+    "../test_files/pcb3038.tsp",
+    "../test_files/fnl4461.tsp",
+    "../test_files/rl5915.tsp"};
 
 /**
  *Prints out the instructions for parameter entry on the command line for EAS
@@ -75,7 +79,7 @@ void printACSWarnings(){
 
 void saveResultsACS(string problemName, int numAnts, double alpha, double beta, double rho){
     ofstream csvFile;
-    csvFile.open("/Users/sawyerbowman/Desktop/acs_results", std::ios_base::app);
+    csvFile.open("/Users/dneedell/Desktop/acs_results.csv", std::ios_base::app);
     
     csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
     rho << endl;
@@ -87,12 +91,12 @@ void saveResultsACS(string problemName, int numAnts, double alpha, double beta, 
  *Saves output into csv file
  */
 
-void saveResultsEAS(string problemName, int numAnts, double alpha, double beta, double rho){
+void saveResultsEAS(string problemName, int numAnts, double alpha, double beta, double rho, double value){
     ofstream csvFile;
-    csvFile.open("/Users/sawyerbowman/Desktop/eas_results", std::ios_base::app);
+    csvFile.open("/Users/dneedell/Desktop/eas_results.csv", std::ios_base::app);
     
     csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
-    rho << endl;
+    rho << value << endl;
     
     csvFile.close();
 }
@@ -102,24 +106,26 @@ void saveResultsEAS(string problemName, int numAnts, double alpha, double beta, 
  */
 
 void testing(){
-    for (int alph = 0; alph < 2; alph++){
-        for (int bet = 0; bet < 2; bet++){
-            for (int rh = 0; rh < 2; rh++){
-                for (int r = 0; r < reps; r++){
-                    //run ACS
-                    AntAlgorithm* alg = new AntAlgorithm("ACS", "filename", numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], .1, .9);
-                    alg->run(0);
-                    
-                    //write ACS results
-                    saveResultsACS("fileName", numAnts[0], alpha[alph], beta[bet], rho[rh]);
-                    
-                    
-                    //run EAS
-                    alg = new AntAlgorithm("EAS", "filename", numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], elitestFactor[0]);
-                    alg->run(0);
-                    
-                    //write EAS results
-                    saveResultsEAS("fileName", numAnts[0], alpha[alph], beta[bet], rho[rh]);
+    for (int file = 0; file < 5; file++){
+        for (int alph = 0; alph < 2; alph++){
+            for (int bet = 0; bet < 2; bet++){
+                for (int rh = 0; rh < 2; rh++){
+                    for (int r = 0; r < reps; r++){
+                        //run ACS
+                        //AntAlgorithm* alg = new AntAlgorithm("ACS", fileNames[file], numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], .1, .9);
+                        //alg->run(0);
+                        
+                        //write ACS results
+                        //saveResultsACS(fileNames[file], numAnts[0], alpha[alph], beta[bet], rho[rh]);
+                        
+                        
+                        //run EAS
+                        AntAlgorithm* alg = new AntAlgorithm("EAS", fileNames[file], numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], elitestFactor[0]);
+                        double value = alg->run(file);
+                        
+                        //write EAS results
+                        saveResultsEAS(fileNames[file], numAnts[0], alpha[alph], beta[bet], rho[rh], value);
+                    }
                 }
             }
         }
@@ -132,6 +138,8 @@ void testing(){
 
 int main(int argc, const char * argv[]) {
     srand( time( NULL ) );
+    
+    //testing();
     
     //If wrong number of params for both algorithms, offer instructions for both
     if (argc != 9 && argc != 10){
