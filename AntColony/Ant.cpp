@@ -9,7 +9,7 @@
 #include "Ant.h"
 
 /**
- *
+ *The constructor to initialize an ant
  */
 
 Ant::Ant(){
@@ -91,7 +91,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
             double tauNum = pow((tau), alpha);
             double etaNum = 0;
             if (numOfStartCity == addCityNum){
-                cout << "This is bad" << endl;
+                //cout << "This is bad" << endl;
                 etaNum = 0;
             }
             //else if(startCity->calcDistance(cities[i]) == 0){
@@ -99,7 +99,7 @@ void Ant::createTour(PheromoneMap* pMap, vector<City*> cities, double alpha,
                 //if there are two, distinct cities that occupy the same location,
                 //we automatically want to visit that city, so we will add that city
                 //to our visited cities vector automatically and skip everything else!
-                cout << "This is bad" << endl;
+                //cout << "This is bad" << endl;
                 this->visitedCities.push_back(cities[i]);
                 sameLocation = true;
                 break;

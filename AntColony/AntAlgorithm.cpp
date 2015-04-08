@@ -81,7 +81,7 @@ void buildTour(AntAlgorithm* data, vector<Ant*> threadAnts){
 }
 
 /**
- *
+ *A method to calculate TauNaught from the greedy tour (used in ACS)
  */
 
 void AntAlgorithm::calcTauNaught(){
@@ -108,15 +108,20 @@ double AntAlgorithm::run(int problemNum){
     
     for (int i = 0; i < this->iterations; i++){
         
-        runThreads();
-        
-//        //Clear the existing tour and build a new one for each ant
-//        for (Ant* currentAnt : this->ants){
-//            currentAnt->clearVisitedCitiesAndTour();
-//            currentAnt->createTour(this->getMap(), this->getProblem()->getCities(), this->getAlpha(),
-//                                   this->getBeta(), this->getProblem()->getCityDistances(),
-//                                   this->getType(), this->getEpsilon(), this->getTauNaught(), this->getQ());
-//        }
+        //Can thread EAS because doesn't require writing to pheromonemap
+        if (this->type == "EAS"){
+            runThreads();
+        }
+        //Need to synchronize on pheromonemap if we were to thread ACS
+        else {
+            //Clear the existing tour and build a new one for each ant
+            for (Ant* currentAnt : this->ants){
+                currentAnt->clearVisitedCitiesAndTour();
+                currentAnt->createTour(this->getMap(), this->getProblem()->getCities(), this->getAlpha(),
+                                       this->getBeta(), this->getProblem()->getCityDistances(),
+                                       this->getType(), this->getEpsilon(), this->getTauNaught(), this->getQ());
+            }
+        }
         
         //Update the pheromone map based on tours constructed by ants
         vector<City*> bestTour = findBestTour();
@@ -133,8 +138,8 @@ double AntAlgorithm::run(int problemNum){
         double time = ((end.tv_sec  - start.tv_sec) * 1000000u + end.tv_usec - start.tv_usec) / 1.e6;
         //double time = (double)(clock() - start)/CLOCKS_PER_SEC;
         //cout << time << endl;
-        if (time > maxTime){ // || this->bsf <= 1.05*optimals[problemNum]){
-            cout << "Iterations taken: " << i << "." << endl;
+        if (time > maxTime ){ //|| this->bsf <= 1.05*optimals[problemNum]){
+            //cout << "Iterations taken: " << i << "." << endl;
             break;
         }
     }
@@ -270,7 +275,7 @@ void AntAlgorithm::updatePheromones(vector<City*> bestTour, string type){
 }
 
 /**
- *
+ *Calculates the "greedy" tour by picking the city nearest to the last city added
  */
 
 vector<City*> AntAlgorithm::getGreedyTour(){

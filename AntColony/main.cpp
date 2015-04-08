@@ -23,11 +23,16 @@ const double elitestFactor[] = {10, 30};
 const double alpha[] = {1, 2};
 const double beta[] = {3, 5};
 const double rho[] = {.1, .3};
-const string fileNames[] = {"../test_files/pr1002.tsp",
-    "../test_files/2/2",
-    "../test_files/pcb3038.tsp",
-    "../test_files/fnl4461.tsp",
-    "../test_files/rl5915.tsp"};
+//const string fileNames[] = {"../test_files/pr1002.tsp",
+//    "../test_files/2/2",
+//    "../test_files/pcb3038.tsp",
+//    "../test_files/fnl4461.tsp",
+//    "../test_files/rl5915.tsp"};
+const string fileNames[] = {"../test_files/ch130.tsp",
+    "../test_files/a280.tsp",
+    "../test_files/lin318.tsp",
+    "../test_files/pr439.tsp",
+    "../test_files/u574.tsp"};
 
 /**
  *Prints out the instructions for parameter entry on the command line for EAS
@@ -77,12 +82,12 @@ void printACSWarnings(){
  *Saves output into csv file
  */
 
-void saveResultsACS(string problemName, int numAnts, double alpha, double beta, double rho){
+void saveResultsACS(string problemName, int numAnts, double alpha, double beta, double rho, double value){
     ofstream csvFile;
-    csvFile.open("/Users/dneedell/Desktop/acs_results.csv", std::ios_base::app);
+    csvFile.open("/Users/sbowman/Desktop/acs_results.csv", std::ios_base::app);
     
     csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
-    rho << endl;
+    rho << "," << value << endl;
     
     csvFile.close();
 }
@@ -93,7 +98,7 @@ void saveResultsACS(string problemName, int numAnts, double alpha, double beta, 
 
 void saveResultsEAS(string problemName, int numAnts, double alpha, double beta, double rho, double value){
     ofstream csvFile;
-    csvFile.open("/Users/dneedell/Desktop/eas_results.csv", std::ios_base::app);
+    csvFile.open("/Users/sbowman/Desktop/eas_results.csv", std::ios_base::app);
     
     csvFile << problemName << "," << numAnts << "," << alpha << "," << beta << "," <<
     rho << value << endl;
@@ -112,19 +117,19 @@ void testing(){
                 for (int rh = 0; rh < 2; rh++){
                     for (int r = 0; r < reps; r++){
                         //run ACS
-                        //AntAlgorithm* alg = new AntAlgorithm("ACS", fileNames[file], numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], .1, .9);
-                        //alg->run(0);
+                        AntAlgorithm* alg = new AntAlgorithm("ACS", fileNames[file], numAnts[1], iterations, alpha[alph], beta[bet], rho[rh], .1, .9);
+                        double value = alg->run(file);
                         
                         //write ACS results
-                        //saveResultsACS(fileNames[file], numAnts[0], alpha[alph], beta[bet], rho[rh]);
+                        saveResultsACS(fileNames[file], numAnts[1], alpha[alph], beta[bet], rho[rh], value);
                         
                         
                         //run EAS
-                        AntAlgorithm* alg = new AntAlgorithm("EAS", fileNames[file], numAnts[0], iterations, alpha[alph], beta[bet], rho[rh], elitestFactor[0]);
-                        double value = alg->run(file);
+                        alg = new AntAlgorithm("EAS", fileNames[file], numAnts[1], iterations, alpha[alph], beta[bet], rho[rh], elitestFactor[1]);
+                        value = alg->run(file);
                         
                         //write EAS results
-                        saveResultsEAS(fileNames[file], numAnts[0], alpha[alph], beta[bet], rho[rh], value);
+                        saveResultsEAS(fileNames[file], numAnts[1], alpha[alph], beta[bet], rho[rh], value);
                     }
                 }
             }
